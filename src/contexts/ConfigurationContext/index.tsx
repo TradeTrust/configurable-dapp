@@ -14,33 +14,7 @@ export const ConfigContext = React.createContext({
       network: "ethereum-ropsten",
       idProof: {}
     },
-    formSchema: [
-      {
-        id: "xyz",
-        name: "DEMO CNM",
-        schema: {
-          type: "object",
-          required: ["id"],
-          properties: {
-            id: {
-              type: "string",
-              title: "ID",
-              ui: {
-                "ui:autofocus": true,
-                "ui:placeholder": "enter id for the document"
-              }
-            },
-            name: {
-              type: "string",
-              title: "Name",
-              ui: {
-                "ui:placeholder": "enter name of the document"
-              }
-            }
-          }
-        }
-      }
-    ]
+    formSchema: []
   },
   setConfig: (config: any) => config
 });
