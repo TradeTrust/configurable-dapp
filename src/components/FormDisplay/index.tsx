@@ -1,25 +1,18 @@
-import React from "react";
+import React, { useContext, ReactElement } from "react";
+import { JsonSchemaForm } from "@govtechsg/tradetrust-react-component";
 import { FormDataContext } from "../../contexts/FormDataContext";
+import { ConfigContext } from "../../contexts/ConfigurationContext";
+import { UploadDataView } from "./UploadDataView";
 
-export class FormDisplay extends React.Component {
-  render() {
-    return (
-      <FormDataContext.Consumer>
-        {({ formData, setFormData }) => {
-          return (<><p>Forms!</p><p>{JSON.stringify(formData)}</p>
-          <ConnectedFormDisplay formData={formData} onFormSubmit={setFormData}></ConnectedFormDisplay></>);
-        }}
-      </FormDataContext.Consumer>
-    );
-  }
-}
+export const FormDisplay = (): ReactElement => {
+  const { formData, setFormData } = useContext(FormDataContext);
 
-class ConnectedFormDisplay extends React.Component {
-  handleFormSubmit = () => {
-    this.props.onFormSubmit({"foo": "bar2"})
-  }
-
-  render() {
-      return (<p>Connected Eh? <button type="button" className="btn btn-primary" onClick={this.handleFormSubmit}>Poke Me</button></p>)
-  }
-}
+  const { config } = useContext(ConfigContext);
+  const handleSubmit = (formValues: object): object => setFormData(formValues);
+  return (
+    <>
+      <UploadDataView />
+      <JsonSchemaForm formSchema={config.formSchema} formData={formData} onSubmit={handleSubmit} />
+    </>
+  );
+};
