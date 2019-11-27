@@ -8,7 +8,7 @@ import { readFileData } from "../utils/file";
 
 const { trace } = getLogger("components/ConfigDropzone");
 
-export const ConfigDropzoneContainer = (): ReactElement => {
+const ConfigDropzoneContainer = (): ReactElement => {
   const { config, setConfig } = useContext(ConfigContext);
   const history = useHistory();
   const processConfigUpdate = (configFile: any): void => {
@@ -62,6 +62,8 @@ const ConfigDropzone = (props: any): ReactElement => {
     </div>
   );
 };
+
+export default ConfigDropzoneContainer;
 
 // export const ConfigDropzoneContainer = () => {
 //   const { config, setConfig } = useContext(ConfigContext);
