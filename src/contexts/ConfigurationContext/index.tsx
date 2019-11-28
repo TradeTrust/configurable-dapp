@@ -1,4 +1,8 @@
-import React from "react";
+import React, { ReactElement } from "react";
+
+interface Props {
+  children: ReactElement;
+}
 
 export const ConfigContext = React.createContext({
   config: {
@@ -8,23 +12,19 @@ export const ConfigContext = React.createContext({
         privateKey: ""
       },
       network: "ethereum-ropsten",
-      idProof: {
-
-      }
+      idProof: {}
     },
-    formSchema: {
-
-    }
+    formSchema: []
   },
-  setConfig: () => {}
+  setConfig: (config: any) => config
 });
 
 export class ConfigProvider extends React.Component {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       config: {},
-      setConfig: config => {
+      setConfig: (config: any) => {
         this.setState(prevState => {
           return { ...prevState, config };
         });
@@ -32,7 +32,7 @@ export class ConfigProvider extends React.Component {
     };
   }
 
-  render() {
+  render(): ReactElement {
     return <ConfigContext.Provider value={this.state}>{this.props.children}</ConfigContext.Provider>;
   }
 }

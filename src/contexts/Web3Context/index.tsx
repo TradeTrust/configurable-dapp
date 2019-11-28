@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import Web3 from "web3";
 
 export const Web3Context = React.createContext({
@@ -19,7 +19,7 @@ export class Web3Provider extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     if (window.ethereum) {
       this.setWeb3(new Web3(window.ethereum));
     }
@@ -29,11 +29,11 @@ export class Web3Provider extends React.Component {
     }
   }
 
-  setWeb3(web3Provider) {
+  setWeb3(web3Provider: any): void {
     this.setState({ web3: web3Provider });
   }
 
-  render() {
+  render(): ReactElement {
     return <Web3Context.Provider value={this.state}>{this.props.children}</Web3Context.Provider>;
   }
 }
