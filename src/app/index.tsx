@@ -12,7 +12,6 @@ export const App = (): ReactElement => (
         <div
           className="container"
           css={css`
-            background-color: #8dbbdf;
             height: 100vh;
           `}
         >
