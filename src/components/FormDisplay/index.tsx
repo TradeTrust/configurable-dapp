@@ -4,7 +4,7 @@ import { FormDataContext } from "../../contexts/FormDataContext";
 import { ConfigContext } from "../../contexts/ConfigurationContext";
 import { UploadDataView } from "./UploadDataView";
 
-export const FormDisplay = (): ReactElement => {
+const FormDisplay = (): ReactElement => {
   const { formData, setFormData } = useContext(FormDataContext);
 
   const { config } = useContext(ConfigContext);
@@ -16,3 +16,5 @@ export const FormDisplay = (): ReactElement => {
     </>
   );
 };
+
+export default FormDisplay;

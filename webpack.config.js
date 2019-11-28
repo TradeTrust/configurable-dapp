@@ -16,6 +16,7 @@ module.exports = {
   target: "web",
   output: {
     path: path.resolve(__dirname, "dist"),
+    chunkFilename: "[name].js",
     filename: "[name].[hash:7].js",
     publicPath: "/"
   },
@@ -53,7 +54,6 @@ module.exports = {
       cacheGroups: {
         vendors: {
           test: /\/node_modules\//,
-          filename: "vendor.[hash:7].js",
           name: "vendor",
           chunks: "all"
         }

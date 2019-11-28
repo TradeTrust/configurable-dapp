@@ -1,23 +1,18 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, Suspense, lazy } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { ConfigDropzoneContainer } from "../components/ConfigDropzone";
-import { FormDisplay } from "../components/FormDisplay";
-import { Web3EnabledWidget } from "../components/ExampleWeb3Widget";
+
+const ConfigDropzoneContainer = lazy((): any => import("../components/ConfigDropzone"));
+const FormDisplay = lazy((): any => import("../components/FormDisplay"));
+const Web3EnabledWidget = lazy((): any => import("../components/ExampleWeb3Widget"));
 
 export const Routes = (): ReactElement => (
   <Router>
-    <Switch>
-      <Route exact path="/">
-        <ConfigDropzoneContainer />
-      </Route>
-
-      <Route path="/form">
-        <FormDisplay />
-      </Route>
-
-      <Route path="/web3-example">
-        <Web3EnabledWidget />
-      </Route>
-    </Switch>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Switch>
+        <Route exact path="/" component={ConfigDropzoneContainer} />
+        <Route exact path="/form" component={FormDisplay} />
+        <Route exact path="/web3-example" component={Web3EnabledWidget} />
+      </Switch>
+    </Suspense>
   </Router>
 );

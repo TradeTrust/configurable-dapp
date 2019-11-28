@@ -8,6 +8,5 @@ export const readFileData = (acceptedFiles: any[], handleUpdate: Function): void
       console.error(e);
     }
   };
-
   acceptedFiles.map(file => reader.readAsText(file));
 };

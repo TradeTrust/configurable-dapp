@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { Web3Context } from "../../contexts/Web3Context";
 
-export class Web3EnabledWidget extends React.Component {
+class Web3EnabledWidget extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -52,3 +52,5 @@ class Widget extends React.Component {
     );
   }
 }
+
+export default Web3EnabledWidget;
