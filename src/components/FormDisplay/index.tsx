@@ -11,6 +11,12 @@ const FormDisplay = (): ReactElement => {
   const { config } = useContext(ConfigContext);
   const formSchema = config.formSchema as Array<FormProps<undefined>["schema"]>;
   const handleSubmit = (formValues: object): object => setFormData(formValues);
+
+  // on submit should
+  // 1) validate data
+  // 2) pass data to form context
+  // 3) go to issuance component
+
   return (
     <>
       {/* <UploadDataView /> */}

@@ -1,11 +1,36 @@
 import React, { ReactElement } from "react";
 import Web3 from "web3";
+import { ethers } from "ethers";
 
 export const Web3Context = React.createContext({
   web3: undefined,
-  setWeb3: () => {}
+  wallet: undefined,
+  setWeb3: () => {},
+  setWallet: () => {}
 });
 
+interface EncryptedJsonWallet {
+  // commonplace web3 encrypted wallet object shape, geth parity etc
+  address: string;
+  id: string;
+  version: number;
+  Crypto: {
+    cipher: string;
+    cipherparams: {
+      iv: string;
+    };
+    ciphertext: string;
+    kdf: string;
+    kdfparams: {
+      salt: string;
+      n: number;
+      dklen: number;
+      p: number;
+      r: number;
+    };
+    mac: string;
+  };
+}
 export class Web3Provider extends React.Component {
   constructor(props) {
     super(props);
@@ -14,6 +39,12 @@ export class Web3Provider extends React.Component {
       setWeb3: web3 => {
         this.setState(prevState => {
           return { ...prevState, web3 };
+        });
+      },
+      setWallet: async (walletEncryptedJson: EncryptedJsonWallet, password: string) => {
+        const wallet = await ethers.Wallet.fromEncryptedJson(JSON.stringify(walletEncryptedJson), password);
+        this.setState(prevState => {
+          return { ...prevState, wallet };
         });
       }
     };
