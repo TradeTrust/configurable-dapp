@@ -1,6 +1,16 @@
 import React, { ReactElement } from "react";
-import Web3 from "web3";
-import { ethers } from "ethers";
+import { ethers, providers } from "ethers";
+import { getWeb3FromEnvironment } from "./utils";
+import { getLogger } from "../../logger"
+
+const { trace } = getLogger("Web3Context")
+
+export interface web3ContextProps {
+  web3: ethers.providers.BaseProvider,
+  wallet: ethers.Wallet,
+  setWeb3: (web3: ethers.providers.Web3Provider) => {},
+  setWallet: (wallet: ethers.Wallet) => {}
+}
 
 export const Web3Context = React.createContext({
   web3: undefined,
@@ -32,17 +42,18 @@ interface EncryptedJsonWallet {
   };
 }
 export class Web3Provider extends React.Component {
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     this.state = {
       web3: undefined,
-      setWeb3: web3 => {
+      setWeb3: (web3: providers.BaseProvider) => {
         this.setState(prevState => {
           return { ...prevState, web3 };
         });
       },
       setWallet: async (walletEncryptedJson: EncryptedJsonWallet, password: string) => {
-        const wallet = await ethers.Wallet.fromEncryptedJson(JSON.stringify(walletEncryptedJson), password);
+        const decryptedWallet = await ethers.Wallet.fromEncryptedJson(JSON.stringify(walletEncryptedJson), password);
+        const wallet = await decryptedWallet.connect(this.state.web3)
         this.setState(prevState => {
           return { ...prevState, wallet };
         });
@@ -51,16 +62,15 @@ export class Web3Provider extends React.Component {
   }
 
   componentDidMount(): void {
-    if (window.ethereum) {
-      this.setWeb3(new Web3(window.ethereum));
-    }
+    const windowWeb3 = getWeb3FromEnvironment();
 
-    if (window.web3) {
-      this.setWeb3(new Web3(window.web3.currentProvider));
+    if (windowWeb3) {
+      trace(`Got web3 on context mount:`, windowWeb3)
+      this.setWeb3(windowWeb3)
     }
   }
 
-  setWeb3(web3Provider: any): void {
+  setWeb3(web3Provider: providers.BaseProvider): void {
     this.setState({ web3: web3Provider });
   }
 
