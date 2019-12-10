@@ -1,5 +1,122 @@
 {
 "modules": [ "issue-document" ],
-
-
+"formSchema": [
+    {
+      "name": "Maersk Issuance Portal",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "consignee": {
+            "type": "object",
+            "title": "Consignee",
+            "ui": {
+              "classNames": "item-pd-0",
+              "name": {},
+              "type": {}
+            },
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              }
+            }
+          },
+          "notifyParty": {
+            "type": "object",
+            "title": "Notify Party",
+            "ui": {
+              "classNames": "item-pd-0",
+              "name": {}
+            },
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "shipper": {
+            "type": "object",
+            "title": "Shipper",
+            "ui": {
+              "classNames": "item-pd-0",
+              "name": {},
+              "address": {
+                "street": {},
+                "country": {}
+              }
+            },
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "address": {
+                "type": "object",
+                "properties": {
+                  "street": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "vessel": {
+            "type": "string",
+            "title": "Vessel"
+          },
+          "voyageNo": {
+            "type": "number",
+            "title": "Voyage No"
+          },
+          "portOfLoading": {
+            "type": "string",
+            "title": "Port of Loading"
+          },
+          "portOfDischarge": {
+            "type": "string",
+            "title": "Port of Discharge"
+          },
+          "placeOfReceipt": {
+            "type": "string",
+            "title": "Place of receipt"
+          },
+          "placeOfDelivery": {
+            "type": "string",
+            "title": "Place of delivery"
+          },
+          "packages": {
+            "type": "array",
+            "title": "Packages",
+            "ui": {
+              "ui:options": {
+                "orderable": false
+              },
+              "classNames": "item-pd-0"
+            },
+            "items": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "weight": {
+                  "type": "number",
+                  "ui": {
+                    "ui:help": "in kg"
+                  }
+                },
+                "measurement": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }
