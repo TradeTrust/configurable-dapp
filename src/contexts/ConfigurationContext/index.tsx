@@ -8,7 +8,7 @@ export const ConfigContext = React.createContext({
   config: {
     application: {
       wallet: {},
-      network: "ethereum-ropsten",
+      network: "ethereum-ropsten"
     },
     documentMeta: {
       name: "Maersk Bill of Lading",
@@ -17,14 +17,16 @@ export const ConfigContext = React.createContext({
         type: "EMBEDDED_RENDERER",
         url: "https://demo-cnm.open-attestation.com"
       },
-      issuers: [{
-        name: "DEMO STORE",
-        tokenRegistry: "",
-        identityProof: {
-          type: "DNS-TXT",
-          location: "tradetrust.io"
+      issuers: [
+        {
+          name: "DEMO STORE",
+          tokenRegistry: "",
+          identityProof: {
+            type: "DNS-TXT",
+            location: "tradetrust.io"
+          }
         }
-      }],
+      ]
     },
     formSchema: []
   },

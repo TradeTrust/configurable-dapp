@@ -1,6 +1,5 @@
 import React, { ReactElement } from "react";
-import { Web3Context, web3ContextProps } from "../../contexts/Web3Context";
-import { ethers } from "ethers"
+import { Web3Context, Web3ContextProps } from "../../contexts/Web3Context";
 
 class Web3EnabledWidget extends React.Component {
   constructor(props) {
@@ -10,7 +9,7 @@ class Web3EnabledWidget extends React.Component {
   render(): ReactElement {
     return (
       <Web3Context.Consumer>
-        {(web3Context) => {
+        {web3Context => {
           return <Widget {...web3Context} />;
         }}
       </Web3Context.Consumer>
@@ -18,7 +17,7 @@ class Web3EnabledWidget extends React.Component {
   }
 }
 
-class Widget extends React.Component<web3ContextProps> {
+class Widget extends React.Component<Web3ContextProps> {
   constructor(props: any) {
     super(props);
 
@@ -42,7 +41,7 @@ class Widget extends React.Component<web3ContextProps> {
           },
           mac: "6387dd75b6a113908644d01557855389af20f614c581c52bbcdd7c83be3f430b"
         }
-      }    
+      }
     };
 
     this.handleRefreshBlock.bind(this);
@@ -54,8 +53,8 @@ class Widget extends React.Component<web3ContextProps> {
   };
 
   handleCreateWallet = async (): Promise<void> => {
-    await this.props.setWallet(this.state.privateKey, "password")
-    console.log(await this.props.wallet.getBalance())
+    await this.props.setWallet(this.state.privateKey, "password");
+    console.log(await this.props.wallet.getBalance());
   };
 
   render(): ReactElement {

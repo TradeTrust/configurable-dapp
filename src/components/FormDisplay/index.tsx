@@ -3,7 +3,7 @@ import { JsonSchemaForm } from "@govtechsg/tradetrust-react-component";
 import { FormDataContext } from "../../contexts/FormDataContext";
 import { ConfigContext } from "../../contexts/ConfigurationContext";
 import { UploadDataView } from "./UploadDataView";
-import { FormProps } from "react-jsonschema-form"
+import { FormProps } from "react-jsonschema-form";
 
 const FormDisplay = (): ReactElement => {
   const { formData, setFormData } = useContext(FormDataContext);
@@ -19,7 +19,7 @@ const FormDisplay = (): ReactElement => {
 
   return (
     <>
-      {/* <UploadDataView /> */}
+      <UploadDataView />
       <JsonSchemaForm formSchema={formSchema} formData={formData} onSubmit={handleSubmit} />
     </>
   );
