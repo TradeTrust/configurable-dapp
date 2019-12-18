@@ -6,29 +6,28 @@ interface Props {
 
 export const ConfigContext = React.createContext({
   config: {
-    issuerDetails: {
-      credentials: {
-        address: "",
-        privateKey: ""
-      },
+    application: {
+      wallet: {},
+      network: "ethereum-ropsten"
     },
-      network: "ethereum-ropsten",
-      documentMeta: {
-        name: "Maersk Bill of Lading",
-        $template: {
-          name: "BILL_OF_LADING",
-          type: "EMBEDDED_RENDERER",
-          url: "https://demo-cnm.open-attestation.com"
-        },
-        issuers: [{
+    documentMeta: {
+      name: "Maersk Bill of Lading",
+      $template: {
+        name: "BILL_OF_LADING",
+        type: "EMBEDDED_RENDERER",
+        url: "https://demo-cnm.open-attestation.com"
+      },
+      issuers: [
+        {
           name: "DEMO STORE",
           tokenRegistry: "",
           identityProof: {
             type: "DNS-TXT",
             location: "tradetrust.io"
           }
-        }],
-      },
+        }
+      ]
+    },
     formSchema: []
   },
   setConfig: (config: any) => config
