@@ -1,6 +1,7 @@
 import React, { useContext, ReactElement } from "react";
 import { JsonSchemaForm } from "@govtechsg/tradetrust-react-component";
 import styled from "@emotion/styled";
+import { issueDocument } from "@govtechsg/tradetrust-schema";
 import { FormProps } from "react-jsonschema-form";
 import { FormDataContext } from "../../contexts/FormDataContext";
 import { ConfigContext } from "../../contexts/ConfigurationContext";
@@ -16,11 +17,17 @@ const FormDisplay = (): ReactElement => {
   const { formData, setFormData } = useContext(FormDataContext);
   const { config } = useContext(ConfigContext);
   const initialFormData = getInitialFormData(config);
+
   const formFieldValues =
     formData && formData.length > 0
       ? formData.map((data: object) => ({ ...data, ...initialFormData }))
       : [initialFormData];
-  const handleSubmit = (formValues: object): object => setFormData(formValues);
+
+  const handleSubmit = (formValues: object): void => { 
+    const wrappedDocument = issueDocument(formValues);
+    console.log(wrappedDocument)
+    setFormData(formValues);
+  }
 
   // on submit should
   // 1) validate data
