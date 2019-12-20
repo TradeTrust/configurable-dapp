@@ -54,7 +54,7 @@ const ConfigDropzone = (props: any): ReactElement => {
     props.onConfigUpdate(configFile);
   };
 
-  const handleFileDrop = (acceptedFiles: File): void => {
+  const handleFileDrop = (acceptedFiles: File[]): void => {
     trace(acceptedFiles);
     readFileData(acceptedFiles, handleConfigUpdate);
   };

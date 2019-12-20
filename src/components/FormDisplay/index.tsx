@@ -1,8 +1,9 @@
-import React, { useContext, useState, ReactElement } from "react";
+import React, { useContext, useState, ReactElement, useEffect } from "react";
 import { JsonSchemaForm } from "@govtechsg/tradetrust-react-component";
-import { Document, SignedDocument } from "@govtechsg/decentralized-renderer-react-components";
+import { Document } from "@govtechsg/decentralized-renderer-react-components";
 import styled from "@emotion/styled";
 import { issueDocument } from "@govtechsg/tradetrust-schema";
+import { isEmpty } from "lodash";
 import { FormDataContext } from "../../contexts/FormDataContext";
 import { ConfigContext } from "../../contexts/ConfigurationContext";
 import { UploadDataView } from "./UploadDataView";
@@ -14,38 +15,38 @@ const HeaderDiv = styled.div`
   text-align: right;
 `;
 
-const FormDisplay = (): ReactElement => {
-  const { formData, setFormData } = useContext<Document>(FormDataContext);
-  const [singedDocument, setSignedDocument] = useState<SignedDocument<any> | null>(null);
-  const [activeTab, setActiveTab] = useState(0);
+const FormDisplay = (props): ReactElement => {
+  const { unSignedData, setUnsignedData, setSignedData } = useContext(FormDataContext);
+  const [activeTab] = useState(0);
   const { config } = useContext(ConfigContext);
   const initialFormData = getInitialFormData(config);
 
+  useEffect(() => {
+    if (isEmpty(config)) props.history.push("/");
+  });
+
   const formFieldValues =
-    formData && formData.length > 0
-      ? formData.map((data: object) => ({ ...data, ...initialFormData }))
+    unSignedData && unSignedData.length > 0
+      ? unSignedData.map((data: object) => ({ ...data, ...initialFormData }))
       : [initialFormData];
 
   const handleSubmit = (formValues: Document): void => {
-    formData[activeTab] = formValues;
+    unSignedData.splice(activeTab, 1, formValues);
     const wrappedDocument = issueDocument(formValues);
-    setFormData(formData);
-    setSignedDocument(wrappedDocument);
+    setUnsignedData(unSignedData);
+    setSignedData(wrappedDocument);
   };
-
-  // on submit should
-  // 1) validate data
-  // 2) pass data to form context
-  // 3) go to issuance component
 
   return (
     <>
       <HeaderDiv className="container">
-        {formData[activeTab] && <DisplayPreview document={formData[activeTab]} />}
+        {unSignedData[activeTab] && <DisplayPreview document={unSignedData[activeTab]} />}
         <UploadDataView />
       </HeaderDiv>
       <div className="container p-2 bg-light">
-        <JsonSchemaForm formSchema={config.formSchema} formData={formFieldValues} onSubmit={handleSubmit} />
+        {!isEmpty(config) && (
+          <JsonSchemaForm formSchema={config.formSchema} formData={formFieldValues} onSubmit={handleSubmit} />
+        )}
       </div>
     </>
   );

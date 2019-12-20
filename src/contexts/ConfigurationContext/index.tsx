@@ -11,19 +11,19 @@ export const ConfigContext = React.createContext({
       network: "ethereum-ropsten"
     },
     documentMeta: {
-      name: "Maersk Bill of Lading",
+      name: "",
       $template: {
-        name: "BILL_OF_LADING",
+        name: "",
         type: "EMBEDDED_RENDERER",
-        url: "https://demo-cnm.open-attestation.com"
+        url: ""
       },
       issuers: [
         {
-          name: "DEMO STORE",
+          name: "",
           tokenRegistry: "",
           identityProof: {
             type: "DNS-TXT",
-            location: "tradetrust.io"
+            location: ""
           }
         }
       ]

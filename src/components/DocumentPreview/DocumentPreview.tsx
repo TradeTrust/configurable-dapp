@@ -6,7 +6,7 @@ import {
   Document
 } from "@govtechsg/decentralized-renderer-react-components";
 import { css } from "@emotion/core";
-import {get} from "lodash";
+import { get } from "lodash";
 
 interface DocumentPreviewProps {
   document: Document;

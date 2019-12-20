@@ -1,19 +1,31 @@
 import React, { ReactElement } from "react";
-import { Document } from "@govtechsg/decentralized-renderer-react-components";
+import { Document, SignedDocument } from "@govtechsg/decentralized-renderer-react-components";
 
 export const FormDataContext = React.createContext({
-  formData: [],
-  setFormData: (formData: object) => formData
+  unSignedData: [],
+  setUnsignedData: (formData: Document[]) => formData,
+  signedData: {},
+  setSignedData: (signedData: SignedDocument<any>) => signedData
 });
 
+interface FormDataProps {
+  children: ReactElement;
+}
+
 export class FormDataProvider extends React.Component {
-  constructor(props) {
+  constructor(props: FormDataProps) {
     super(props);
     this.state = {
-      formData: [],
-      setFormData: (formData: object) => {
-        this.setState(prevState => {
-          return { ...prevState, formData };
+      unSignedData: [],
+      signedData: {},
+      setUnsignedData: (unSignedData: Document[]) => {
+        this.setState(() => {
+          return { unSignedData };
+        });
+      },
+      setSignedData: (signedData: SignedDocument<any>) => {
+        this.setState(() => {
+          return { signedData };
         });
       }
     };
