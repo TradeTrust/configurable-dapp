@@ -24,6 +24,7 @@
     "react-redux": "^7.1.3",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
+    "testcafe": "^1.7.1",
     "web3": "^1.2.4"
   },
   "scripts": {
@@ -36,6 +37,8 @@
     "test": "jest --ci",
     "test:coverage": "npm run test -- --coverage",
     "test:watch": "npm run test -- --watch",
+    "integration": "testcafe chrome src/**/*.spec.ts",
+    "integration:headless": "testcafe chrome:headless src/**/*.spec.ts",
     "semantic-release": "semantic-release"
   },
   "devDependencies": {

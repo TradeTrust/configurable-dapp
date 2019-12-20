@@ -8,27 +8,26 @@ import { FormDataContext } from "../../contexts/FormDataContext";
 import { ConfigContext } from "../../contexts/ConfigurationContext";
 import { UploadDataView } from "./UploadDataView";
 import { DisplayPreview } from "./DisplayPreview";
-import { getInitialFormData } from "../utils/config";
 
 const HeaderDiv = styled.div`
   background-color: dimgray;
   text-align: right;
 `;
 
-const FormDisplay = (props): ReactElement => {
+interface FormDisplayProps {
+  history: {
+    push(url: string): void;
+  };
+}
+
+const FormDisplay = (props: FormDisplayProps): ReactElement => {
   const { unSignedData, setUnsignedData, setSignedData } = useContext(FormDataContext);
   const [activeTab] = useState(0);
   const { config } = useContext(ConfigContext);
-  const initialFormData = getInitialFormData(config);
 
   useEffect(() => {
     if (isEmpty(config)) props.history.push("/");
   });
-
-  const formFieldValues =
-    unSignedData && unSignedData.length > 0
-      ? unSignedData.map((data: object) => ({ ...data, ...initialFormData }))
-      : [initialFormData];
 
   const handleSubmit = (formValues: Document): void => {
     unSignedData.splice(activeTab, 1, formValues);
@@ -39,13 +38,13 @@ const FormDisplay = (props): ReactElement => {
 
   return (
     <>
-      <HeaderDiv className="container">
+      <HeaderDiv id="form-header" className="container">
         {unSignedData[activeTab] && <DisplayPreview document={unSignedData[activeTab]} />}
         <UploadDataView />
       </HeaderDiv>
-      <div className="container p-2 bg-light">
+      <div id="form-body" className="container p-2 bg-light">
         {!isEmpty(config) && (
-          <JsonSchemaForm formSchema={config.formSchema} formData={formFieldValues} onSubmit={handleSubmit} />
+          <JsonSchemaForm formSchema={config.formSchema} formData={unSignedData} onSubmit={handleSubmit} />
         )}
       </div>
     </>
