@@ -1,16 +1,23 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { FrameConnector, FrameActions, HostActionsHandler, Document } from "@govtechsg/decentralized-renderer-react-components";
+import {
+  FrameConnector,
+  FrameActions,
+  HostActionsHandler,
+  Document
+} from "@govtechsg/decentralized-renderer-react-components";
 import { css } from "@emotion/core";
+import {get} from "lodash";
 
 interface DocumentPreviewProps {
-  document: Document
+  document: Document;
 }
 
-export const DocumentPreview = ({document}: DocumentPreviewProps): React.ReactElement => {
+export const DocumentPreview = ({ document }: DocumentPreviewProps): React.ReactElement => {
   const [toFrame, setToFrame] = useState<HostActionsHandler>();
   const [height, setHeight] = useState(50);
   const [templates, setTemplates] = useState<{ id: string; label: string }[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<string>("");
+  const sourceUrl = get(document, "$template.url", "");
   const fn = useCallback((toFrame: HostActionsHandler) => {
     // wrap into a function otherwise toFrame function will be executed
     setToFrame(() => toFrame);
@@ -34,7 +41,7 @@ export const DocumentPreview = ({document}: DocumentPreviewProps): React.ReactEl
         }
       });
     }
-  }, [toFrame]);
+  }, [document, toFrame]);
   useEffect(() => {
     if (toFrame && selectedTemplate) {
       toFrame({
@@ -46,49 +53,6 @@ export const DocumentPreview = ({document}: DocumentPreviewProps): React.ReactEl
 
   return (
     <div>
-      <div
-        css={css`
-          display: flex;
-          justify-content: center;
-          margin-bottom: 0.5rem;
-          button {
-            color: #fff;
-            background-color: #007bff;
-            border-color: #007bff;
-            display: inline-block;
-            font-weight: 400;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: middle;
-            user-select: none;
-            border: 1px solid transparent;
-            padding: 0.375rem 0.75rem;
-            font-size: 1rem;
-            line-height: 1.5;
-            border-radius: 0.25rem;
-            cursor: pointer;
-            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
-              box-shadow 0.15s ease-in-out;
-          }
-          button:hover {
-            color: #fff;
-            background-color: #0069d9;
-            border-color: #0062cc;
-          }
-        `}
-      >
-        <button
-          onClick={() => {
-            if (toFrame) {
-              toFrame({
-                type: "PRINT"
-              });
-            }
-          }}
-        >
-          Print
-        </button>
-      </div>
       <div
         css={css`
           display: flex;
@@ -118,7 +82,7 @@ export const DocumentPreview = ({document}: DocumentPreviewProps): React.ReactEl
       </div>
       <div>
         <FrameConnector
-          source="https://demo-cnm.openattestation.com"
+          source={sourceUrl}
           dispatch={fromFrame}
           onConnected={fn}
           css={css`

@@ -1,1 +1,1 @@
-export {DocumentPreview} from "./DocumentPreview";
+export { DocumentPreview } from "./DocumentPreview";

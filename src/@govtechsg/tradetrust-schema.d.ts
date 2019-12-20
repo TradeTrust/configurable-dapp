@@ -1,1 +1,1 @@
-declare module '@govtechsg/tradetrust-schema';
+declare module "@govtechsg/tradetrust-schema";

@@ -1,11 +1,12 @@
 import React, { useContext, useState, ReactElement } from "react";
 import { JsonSchemaForm } from "@govtechsg/tradetrust-react-component";
+import { Document, SignedDocument } from "@govtechsg/decentralized-renderer-react-components";
 import styled from "@emotion/styled";
 import { issueDocument } from "@govtechsg/tradetrust-schema";
 import { FormDataContext } from "../../contexts/FormDataContext";
 import { ConfigContext } from "../../contexts/ConfigurationContext";
 import { UploadDataView } from "./UploadDataView";
-import {DisplayPreview} from "./DisplayPreview";
+import { DisplayPreview } from "./DisplayPreview";
 import { getInitialFormData } from "../utils/config";
 
 const HeaderDiv = styled.div`
@@ -14,8 +15,9 @@ const HeaderDiv = styled.div`
 `;
 
 const FormDisplay = (): ReactElement => {
-  const { formData, setFormData } = useContext(FormDataContext);
-  const [singedDocument, setSignedDocument] = useState<Document | null>(null);
+  const { formData, setFormData } = useContext<Document>(FormDataContext);
+  const [singedDocument, setSignedDocument] = useState<SignedDocument<any> | null>(null);
+  const [activeTab, setActiveTab] = useState(0);
   const { config } = useContext(ConfigContext);
   const initialFormData = getInitialFormData(config);
 
@@ -24,11 +26,12 @@ const FormDisplay = (): ReactElement => {
       ? formData.map((data: object) => ({ ...data, ...initialFormData }))
       : [initialFormData];
 
-  const handleSubmit = (formValues: object): void => { 
+  const handleSubmit = (formValues: Document): void => {
+    formData[activeTab] = formValues;
     const wrappedDocument = issueDocument(formValues);
-    setFormData(formValues);
+    setFormData(formData);
     setSignedDocument(wrappedDocument);
-  }
+  };
 
   // on submit should
   // 1) validate data
@@ -38,14 +41,14 @@ const FormDisplay = (): ReactElement => {
   return (
     <>
       <HeaderDiv className="container">
-        {singedDocument && <DisplayPreview document={singedDocument}/>}
+        {formData[activeTab] && <DisplayPreview document={formData[activeTab]} />}
         <UploadDataView />
       </HeaderDiv>
       <div className="container p-2 bg-light">
         <JsonSchemaForm formSchema={config.formSchema} formData={formFieldValues} onSubmit={handleSubmit} />
       </div>
     </>
-  )
+  );
 };
 
 export default FormDisplay;
