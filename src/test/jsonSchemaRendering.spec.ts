@@ -11,8 +11,7 @@ const validateTextContent = async (t: TestController, component: Selector, texts
   texts.reduce(async (_prev, curr) => t.expect(component.textContent).contains(curr), Promise.resolve());
 
 /* eslint-disable jest/expect-expect, jest/require-top-level-describe */
-test("config schema is rendered correctly", async () => {
-  await new Promise(async (t: any) => {
+test("config schema is rendered correctly", async (t: TestController) => {
     const container = Selector("#document-dropzone");
     await container();
     await validateTextContent(t, DropzoneContainer, ["Drag 'n' drop TradeTrust configuration file here"]);
@@ -29,5 +28,4 @@ test("config schema is rendered correctly", async () => {
       "Recipient of the container",
       "Consignee"
     ]);
-  });
 });
