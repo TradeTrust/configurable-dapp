@@ -19,13 +19,13 @@ export class FormDataProvider extends React.Component {
       unSignedData: [],
       signedData: {},
       setUnsignedData: (unSignedData: Document[]) => {
-        this.setState(() => {
-          return { unSignedData };
+        this.setState(prevState => {
+          return { ...prevState, unSignedData };
         });
       },
       setSignedData: (signedData: SignedDocument<any>) => {
-        this.setState(() => {
-          return { signedData };
+        this.setState(prevState => {
+          return { ...prevState, signedData };
         });
       }
     };
