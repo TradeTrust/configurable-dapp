@@ -8,7 +8,7 @@ interface PopupModalProps {
 }
 
 const PopupModal = ({ togglePreviewDisplay, document }: PopupModalProps): ReactElement => (
-  <div id="myModal" className="modal" role="dialog" style={{ display: "block", overflow: "scroll" }}>
+  <div id="preview-modal" className="modal" role="dialog" style={{ display: "block", overflow: "scroll" }}>
     <div className="modal-dialog" style={{ maxWidth: "85%" }}>
       <div className="modal-content">
         <div className="modal-header">
@@ -36,7 +36,7 @@ export const DisplayPreview = ({ document }: { document: Document }): ReactEleme
     return <PopupModal document={document} togglePreviewDisplay={togglePreviewDisplay} />;
   }
   return (
-    <button className="btn btn-primary" onClick={() => togglePreviewDisplay(!isPreviewVisible)}>
+    <button id="document-preview" className="btn btn-primary" onClick={() => togglePreviewDisplay(!isPreviewVisible)}>
       Show Preview
     </button>
   );

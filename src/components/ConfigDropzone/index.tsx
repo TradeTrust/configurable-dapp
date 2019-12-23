@@ -1,11 +1,13 @@
 import React, { useContext, ReactElement } from "react";
 import { useHistory } from "react-router-dom";
 import { ConfigContext } from "../../contexts/ConfigurationContext";
+import { FormDataContext } from "../../contexts/FormDataContext";
 import Dropzone from "react-dropzone";
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
 import { getLogger } from "../../logger";
 import { readFileData } from "../utils/file";
+import { getInitialFormData } from "../utils/config";
 
 const { trace } = getLogger("components/ConfigDropzone");
 
@@ -40,9 +42,13 @@ const SelectButton = styled.button`
 
 const ConfigDropzoneContainer = (): ReactElement => {
   const { config, setConfig } = useContext(ConfigContext);
+  const { setUnsignedData } = useContext(FormDataContext);
+
   const history = useHistory();
   const processConfigUpdate = (configFile: any): void => {
     setConfig(configFile);
+    const initialFormData = getInitialFormData(configFile);
+    setUnsignedData([initialFormData]);
     history.push("/form");
   };
 
@@ -63,10 +69,10 @@ const ConfigDropzone = (props: any): ReactElement => {
     <div className="h-100">
       <div className="row h-25" />
       <div className="row h-50">
-        <div className="col">
+        <div id="dropzone-container" className="col">
           <Dropzone onDrop={handleFileDrop}>
             {({ getRootProps, getInputProps }) => (
-              <section className="h-100">
+              <section id="document-dropzone" className="h-100">
                 <DropzoneDiv
                   {...getRootProps({
                     className: "p-3"
