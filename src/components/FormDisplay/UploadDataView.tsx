@@ -8,7 +8,7 @@ export const UploadDataView = (): ReactElement => {
     readFileData([...e.target.files], setFormData);
   };
   return (
-    <label className="btn btn-primary m-3">
+    <label className="btn btn-primary">
       Upload Data File <input type="file" onChange={handleFileUpload} hidden />
     </label>
   );

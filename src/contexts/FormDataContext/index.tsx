@@ -9,7 +9,7 @@ export class FormDataProvider extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      formData: [],
+      formData: [{ id: "bar", name: "123" }],
       setFormData: (formData: object) => {
         this.setState(prevState => {
           return { ...prevState, formData };
