@@ -14,23 +14,28 @@ const validateTextContent = async (t: TestController, component: Selector, texts
   texts.reduce(async (_prev, curr) => t.expect(component.textContent).contains(curr), Promise.resolve());
 
 /* eslint-disable jest/expect-expect, jest/require-top-level-describe */
-test("form preview is rendered correctly", async (t: TestController) => {
-    await t.setFilesToUpload("input[type=file]", [Config]);
-    await FormHeader.with({ visibilityCheck: true })();
-    await t.setFilesToUpload("input[type=file]", [Data]);
+test("form preview is rendered correctly", async () => {
+  await new Promise(t => {
+    await new Promise(async done => {
+      await t.setFilesToUpload("input[type=file]", [Config]);
+      await FormHeader.with({ visibilityCheck: true })();
+      await t.setFilesToUpload("input[type=file]", [Data]);
 
-    await validateTextContent(t, FormHeader, ["Show Preview"]);
-    await t.click(ShowPreview).setPageLoadTimeout(10000);
-    await validateTextContent(t, PreviewModal, ["Document Preview"]);
-    await t.switchToIframe(IframeBlock);
-    await SampleTemplate.with({ visibilityCheck: true })();
+      await validateTextContent(t, FormHeader, ["Show Preview"]);
+      await t.click(ShowPreview).setPageLoadTimeout(10000);
+      await validateTextContent(t, PreviewModal, ["Document Preview"]);
+      await t.switchToIframe(IframeBlock);
+      await SampleTemplate.with({ visibilityCheck: true })();
 
-    await validateTextContent(t, SampleTemplate, [
-      "Demo Shipper",
-      "BILL OF LADING FOR OCEAN TRANSPORT OR MULTIMODAL TRANSPORT",
-      "Demo Consignee",
-      "China Port",
-      "Green Apples",
-      "THREE/3"
-    ]);
+      await validateTextContent(t, SampleTemplate, [
+        "Demo Shipper",
+        "BILL OF LADING FOR OCEAN TRANSPORT OR MULTIMODAL TRANSPORT",
+        "Demo Consignee",
+        "China Port",
+        "Green Apples",
+        "THREE/3"
+      ]);
+      done();
+    });
+  });
 });
