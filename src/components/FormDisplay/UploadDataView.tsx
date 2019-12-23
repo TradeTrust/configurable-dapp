@@ -3,9 +3,9 @@ import { readFileData } from "../utils/file";
 import { FormDataContext } from "../../contexts/FormDataContext";
 
 export const UploadDataView = (): ReactElement => {
-  const { setUnsignedData } = useContext(FormDataContext);
+  const { setDocumentMetaData } = useContext(FormDataContext);
   const handleFileUpload = (e: any): void => {
-    readFileData([...e.target.files], setUnsignedData);
+    readFileData([...e.target.files], setDocumentMetaData);
   };
   return (
     <label className="btn btn-primary m-3">

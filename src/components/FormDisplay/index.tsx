@@ -16,7 +16,7 @@ const HeaderDiv = styled.div`
 `;
 
 const FormDisplay = (props): ReactElement => {
-  const { unSignedData, setUnsignedData, setSignedData } = useContext(FormDataContext);
+  const { documentMeta, setDocumentMetaData, setWrappedDocument } = useContext(FormDataContext);
   const [activeTab] = useState(0);
   const { config } = useContext(ConfigContext);
   const initialFormData = getInitialFormData(config);
@@ -25,22 +25,21 @@ const FormDisplay = (props): ReactElement => {
     if (isEmpty(config)) props.history.push("/");
   });
 
-  const formFieldValues =
-    unSignedData && unSignedData.length > 0
-      ? unSignedData.map((data: object) => ({ ...data, ...initialFormData }))
+  const formFieldValues = documentMeta?.length > 0
+      ? documentMeta.map((data: object) => ({ ...data, ...initialFormData }))
       : [initialFormData];
 
   const handleSubmit = (formValues: Document): void => {
-    unSignedData.splice(activeTab, 1, formValues);
+    documentMeta.splice(activeTab, 1, formValues);
     const wrappedDocument = issueDocument(formValues);
-    setUnsignedData(unSignedData);
-    setSignedData(wrappedDocument);
+    setDocumentMetaData(documentMeta);
+    setWrappedDocument(wrappedDocument);
   };
 
   return (
     <>
       <HeaderDiv className="container">
-        {unSignedData[activeTab] && <DisplayPreview document={unSignedData[activeTab]} />}
+        {documentMeta[activeTab] && <DisplayPreview document={documentMeta[activeTab]} />}
         <UploadDataView />
       </HeaderDiv>
       <div className="container p-2 bg-light">
