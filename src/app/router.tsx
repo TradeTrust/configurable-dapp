@@ -14,10 +14,10 @@ interface RouteProps {
   path: string;
 }
 
-const ValidatedRoute = ({component: Component, ...rest}: RouteProps) => {
+const ValidatedRoute = ({ component: Component, ...rest }: RouteProps): ReactElement => {
   const { config } = useContext(ConfigContext);
-  return (<Route {...rest} render={props => !isEmpty(config) ? <Component {...props} /> : <Redirect to='/' />} />);
-}
+  return <Route {...rest} render={props => (!isEmpty(config) ? <Component {...props} /> : <Redirect to="/" />)} />;
+};
 
 export const Routes = (): ReactElement => (
   <Router>

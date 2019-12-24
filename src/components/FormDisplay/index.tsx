@@ -1,4 +1,4 @@
-import React, { useContext, useState, ReactElement, useEffect } from "react";
+import React, { useContext, useState, ReactElement } from "react";
 import { JsonSchemaForm } from "@govtechsg/tradetrust-react-component";
 import { Document } from "@govtechsg/decentralized-renderer-react-components";
 import styled from "@emotion/styled";
@@ -30,7 +30,7 @@ const FormDisplay = (): ReactElement => {
         <UploadDataView />
       </HeaderDiv>
       <div id="form-body" className="container p-2 bg-light">
-          <JsonSchemaForm formSchema={config.formSchema} formData={documentsMeta} onSubmit={handleSubmit} />
+        <JsonSchemaForm formSchema={config.formSchema} formData={documentsMeta} onSubmit={handleSubmit} />
       </div>
     </>
   );

@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { issueDocument } from "@govtechsg/tradetrust-schema";
-import { Document, SignedDocument } from "@govtechsg/decentralized-renderer-react-components";
+import { Document } from "@govtechsg/decentralized-renderer-react-components";
 
 export const FormDataContext = React.createContext({
   documentsMeta: [],
