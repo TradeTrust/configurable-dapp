@@ -8,6 +8,7 @@ import styled from "@emotion/styled";
 import { getLogger } from "../../logger";
 import { readFileData } from "../utils/file";
 import { getInitialFormData } from "../utils/config";
+import { notify } from "../utils/toast";
 
 const { trace } = getLogger("components/ConfigDropzone");
 
@@ -60,9 +61,13 @@ const ConfigDropzone = (props: any): ReactElement => {
     props.onConfigUpdate(configFile);
   };
 
+  const handleFileError = () => {
+    notify("error");
+  }
+
   const handleFileDrop = (acceptedFiles: File[]): void => {
     trace(acceptedFiles);
-    readFileData(acceptedFiles, handleConfigUpdate);
+    readFileData(acceptedFiles, handleConfigUpdate, handleFileError);
   };
 
   return (
