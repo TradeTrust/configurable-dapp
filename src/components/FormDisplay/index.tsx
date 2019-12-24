@@ -1,9 +1,7 @@
-import React, { useContext, useState, ReactElement, useEffect } from "react";
+import React, { useContext, useState, ReactElement } from "react";
 import { JsonSchemaForm } from "@govtechsg/tradetrust-react-component";
 import { Document } from "@govtechsg/decentralized-renderer-react-components";
 import styled from "@emotion/styled";
-import { issueDocument } from "@govtechsg/tradetrust-schema";
-import { isEmpty } from "lodash";
 import { FormDataContext } from "../../contexts/FormDataContext";
 import { ConfigContext } from "../../contexts/ConfigurationContext";
 import { UploadDataView } from "./UploadDataView";
@@ -14,36 +12,25 @@ const HeaderDiv = styled.div`
   text-align: right;
 `;
 
-const FormDisplay = (props): ReactElement => {
-  const { documentMeta, setDocumentMetaData, setWrappedDocument } = useContext(FormDataContext);
+const FormDisplay = (): ReactElement => {
+  const { documentsMeta, setDocumentMeta, setWrappedDocument } = useContext(FormDataContext);
   const [activeTab] = useState(0);
   const { config } = useContext(ConfigContext);
 
-  useEffect(() => {
-    if (isEmpty(config)) props.history.push("/");
-  });
-
-  const formFieldValues = documentMeta?.length > 0
-      ? documentMeta.map((data: object) => ({ ...data, ...initialFormData }))
-      : [initialFormData];
-
   const handleSubmit = (formValues: Document): void => {
-    documentMeta.splice(activeTab, 1, formValues);
-    const wrappedDocument = issueDocument(formValues);
-    setDocumentMetaData(documentMeta);
-    setWrappedDocument(wrappedDocument);
+    documentsMeta.splice(activeTab, 1, formValues);
+    setDocumentMeta(documentsMeta);
+    setWrappedDocument(formValues);
   };
 
   return (
     <>
-      <HeaderDiv className="container">
-        {documentMeta[activeTab] && <DisplayPreview document={documentMeta[activeTab]} />}
+      <HeaderDiv id="form-header" className="container">
+        {documentsMeta[activeTab] && <DisplayPreview document={documentsMeta[activeTab]} />}
         <UploadDataView />
       </HeaderDiv>
       <div id="form-body" className="container p-2 bg-light">
-        {!isEmpty(config) && (
-          <JsonSchemaForm formSchema={config.formSchema} formData={documentMeta} onSubmit={handleSubmit} />
-        )}
+        <JsonSchemaForm formSchema={config.formSchema} formData={documentsMeta} onSubmit={handleSubmit} />
       </div>
     </>
   );

@@ -1,11 +1,12 @@
 import React, { ReactElement } from "react";
-import { Document, SignedDocument } from "@govtechsg/decentralized-renderer-react-components";
+import { issueDocument } from "@govtechsg/tradetrust-schema";
+import { Document } from "@govtechsg/decentralized-renderer-react-components";
 
 export const FormDataContext = React.createContext({
-  documentMeta: [],
-  setDocumentMetaData: (documentMeta: Document[]) => documentMeta,
+  documentsMeta: [],
+  setDocumentMeta: (documentsMeta: Document[]) => documentsMeta,
   wrappedDocument: {},
-  setWrappedDocument: (wrappedDocument: SignedDocument<any>) => wrappedDocument
+  setWrappedDocument: (wrappedDocument: Document) => wrappedDocument
 });
 
 interface FormDataProps {
@@ -16,14 +17,15 @@ export class FormDataProvider extends React.Component {
   constructor(props: FormDataProps) {
     super(props);
     this.state = {
-      documentMeta: [],
+      documentsMeta: [],
       wrappedDocument: {},
-      setDocumentMetaData: (documentMeta: Document[]) => {
+      setDocumentMeta: (documentsMeta: Document[]) => {
         this.setState(prevState => {
-          return { ...prevState, documentMeta };
+          return { ...prevState, documentsMeta };
         });
       },
-      setWrappedDocument: (wrappedDocument: SignedDocument<any>) => {
+      setWrappedDocument: (documentMeta: Document) => {
+        const wrappedDocument = issueDocument(documentMeta);
         this.setState(prevState => {
           return { ...prevState, wrappedDocument };
         });
