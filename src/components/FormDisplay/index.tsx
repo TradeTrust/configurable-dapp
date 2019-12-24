@@ -14,14 +14,8 @@ const HeaderDiv = styled.div`
   text-align: right;
 `;
 
-interface FormDisplayProps {
-  history: {
-    push(url: string): void;
-  };
-}
-
-const FormDisplay = (props: FormDisplayProps): ReactElement => {
-  const { documentMeta, setDocumentMeta, setWrappedDocument } = useContext(FormDataContext);
+const FormDisplay = (props): ReactElement => {
+  const { documentMeta, setDocumentMetaData, setWrappedDocument } = useContext(FormDataContext);
   const [activeTab] = useState(0);
   const { config } = useContext(ConfigContext);
 
@@ -29,16 +23,20 @@ const FormDisplay = (props: FormDisplayProps): ReactElement => {
     if (isEmpty(config)) props.history.push("/");
   });
 
+  const formFieldValues = documentMeta?.length > 0
+      ? documentMeta.map((data: object) => ({ ...data, ...initialFormData }))
+      : [initialFormData];
+
   const handleSubmit = (formValues: Document): void => {
     documentMeta.splice(activeTab, 1, formValues);
     const wrappedDocument = issueDocument(formValues);
-    setDocumentMeta(documentMeta);
+    setDocumentMetaData(documentMeta);
     setWrappedDocument(wrappedDocument);
   };
 
   return (
     <>
-      <HeaderDiv id="form-header" className="container">
+      <HeaderDiv className="container">
         {documentMeta[activeTab] && <DisplayPreview document={documentMeta[activeTab]} />}
         <UploadDataView />
       </HeaderDiv>

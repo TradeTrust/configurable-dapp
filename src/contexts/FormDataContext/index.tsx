@@ -3,7 +3,7 @@ import { Document, SignedDocument } from "@govtechsg/decentralized-renderer-reac
 
 export const FormDataContext = React.createContext({
   documentMeta: [],
-  setDocumentMeta: (documentMeta: Document[]) => documentMeta,
+  setDocumentMetaData: (documentMeta: Document[]) => documentMeta,
   wrappedDocument: {},
   setWrappedDocument: (wrappedDocument: SignedDocument<any>) => wrappedDocument
 });
@@ -16,9 +16,9 @@ export class FormDataProvider extends React.Component {
   constructor(props: FormDataProps) {
     super(props);
     this.state = {
-      unSignedData: [],
+      documentMeta: [],
       wrappedDocument: {},
-      setDocumentMeta: (documentMeta: Document[]) => {
+      setDocumentMetaData: (documentMeta: Document[]) => {
         this.setState(prevState => {
           return { ...prevState, documentMeta };
         });
