@@ -1,4 +1,5 @@
 import React, { ReactElement } from "react";
+import { Config } from "../../types";
 
 interface Props {
   children: ReactElement;
@@ -30,7 +31,7 @@ export const ConfigContext = React.createContext({
     },
     formSchema: []
   },
-  setConfig: (config: any) => config
+  setConfig: (config: Config) => config
 });
 
 export class ConfigProvider extends React.Component {
