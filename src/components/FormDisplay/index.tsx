@@ -21,7 +21,7 @@ interface FormDisplayProps {
 }
 
 const FormDisplay = (props: FormDisplayProps): ReactElement => {
-  const { unSignedData, setUnsignedData, setSignedData } = useContext(FormDataContext);
+  const { documentMeta, setDocumentMeta, setWrappedDocument } = useContext(FormDataContext);
   const [activeTab] = useState(0);
   const { config } = useContext(ConfigContext);
 
@@ -30,21 +30,21 @@ const FormDisplay = (props: FormDisplayProps): ReactElement => {
   });
 
   const handleSubmit = (formValues: Document): void => {
-    unSignedData.splice(activeTab, 1, formValues);
+    documentMeta.splice(activeTab, 1, formValues);
     const wrappedDocument = issueDocument(formValues);
-    setUnsignedData(unSignedData);
-    setSignedData(wrappedDocument);
+    setDocumentMeta(documentMeta);
+    setWrappedDocument(wrappedDocument);
   };
 
   return (
     <>
       <HeaderDiv id="form-header" className="container">
-        {unSignedData[activeTab] && <DisplayPreview document={unSignedData[activeTab]} />}
+        {documentMeta[activeTab] && <DisplayPreview document={documentMeta[activeTab]} />}
         <UploadDataView />
       </HeaderDiv>
       <div id="form-body" className="container p-2 bg-light">
         {!isEmpty(config) && (
-          <JsonSchemaForm formSchema={config.formSchema} formData={unSignedData} onSubmit={handleSubmit} />
+          <JsonSchemaForm formSchema={config.formSchema} formData={documentMeta} onSubmit={handleSubmit} />
         )}
       </div>
     </>
