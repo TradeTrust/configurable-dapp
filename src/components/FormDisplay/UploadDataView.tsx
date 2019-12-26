@@ -2,16 +2,16 @@ import React, { useContext, ReactElement } from "react";
 import { readFileData } from "../utils/file";
 import { FormDataContext } from "../../contexts/FormDataContext";
 import { ConfigContext } from "../../contexts/ConfigurationContext";
-import { getInitialFormData } from "../utils/config";
+import { getDocumentMetaData } from "../utils/config";
 
 export const UploadDataView = (): ReactElement => {
   const { setDocumentsList } = useContext(FormDataContext);
   const { config } = useContext(ConfigContext);
-  const initialFormData = getInitialFormData(config);
+  const documentMeta = getDocumentMetaData(config);
 
-  const updateFormData = (uploadedData: Document[]): void => {
-    const mergedDataSet = uploadedData.map((data: object) => ({ ...data, ...initialFormData }));
-    setDocumentsList(mergedDataSet);
+  const updateFormData = (uploadedFormData: Document[]): void => {
+    const mergedDocumentsSet = uploadedFormData.map((formData: Document) => ({ ...formData, ...documentMeta }));
+    setDocumentsList(mergedDocumentsSet);
   };
   const handleFileUpload = (e: any): void => {
     readFileData([...e.target.files], updateFormData);

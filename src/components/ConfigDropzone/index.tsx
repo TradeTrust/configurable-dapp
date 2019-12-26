@@ -7,7 +7,7 @@ import { css } from "@emotion/core";
 import styled from "@emotion/styled";
 import { getLogger } from "../../logger";
 import { readFileData } from "../utils/file";
-import { getInitialFormData } from "../utils/config";
+import { getDocumentMetaData } from "../utils/config";
 
 const { trace } = getLogger("components/ConfigDropzone");
 
@@ -47,8 +47,8 @@ const ConfigDropzoneContainer = (): ReactElement => {
   const history = useHistory();
   const processConfigUpdate = (configFile: any): void => {
     setConfig(configFile);
-    const initialFormData = getInitialFormData(configFile);
-    setDocumentsList([initialFormData]);
+    const documentMeta = getDocumentMetaData(configFile);
+    setDocumentsList([documentMeta]);
     history.push("/form");
   };
 
