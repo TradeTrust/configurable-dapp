@@ -13,24 +13,24 @@ const HeaderDiv = styled.div`
 `;
 
 const FormDisplay = (): ReactElement => {
-  const { documentsMeta, setDocumentMeta, setWrappedDocument } = useContext(FormDataContext);
-  const [activeTab] = useState(0);
+  const { documentsList, setDocumentsList, setDocument } = useContext(FormDataContext);
+  const [activeTab] = useState(0); //Add setActiveTab method to update it when handling multitab
   const { config } = useContext(ConfigContext);
 
-  const handleSubmit = (formValues: Document): void => {
-    documentsMeta.splice(activeTab, 1, formValues);
-    setDocumentMeta(documentsMeta);
-    setWrappedDocument(formValues);
+  const handleSubmit = (document: Document): void => {
+    documentsList.splice(activeTab, 1, document);
+    setDocumentsList(documentsList);
+    setDocument(document);
   };
 
   return (
     <>
       <HeaderDiv id="form-header" className="container">
-        {documentsMeta[activeTab] && <DisplayPreview document={documentsMeta[activeTab]} />}
+        {documentsList[activeTab] && <DisplayPreview document={documentsList[activeTab]} />}
         <UploadDataView />
       </HeaderDiv>
       <div id="form-body" className="container p-2 bg-light">
-        <JsonSchemaForm formSchema={config.formSchema} formData={documentsMeta} onSubmit={handleSubmit} />
+        <JsonSchemaForm formSchema={config.formSchema} formData={documentsList} onSubmit={handleSubmit} />
       </div>
     </>
   );

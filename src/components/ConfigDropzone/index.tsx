@@ -42,13 +42,13 @@ const SelectButton = styled.button`
 
 const ConfigDropzoneContainer = (): ReactElement => {
   const { config, setConfig } = useContext(ConfigContext);
-  const { setDocumentMeta } = useContext(FormDataContext);
+  const { setDocumentsList } = useContext(FormDataContext);
 
   const history = useHistory();
   const processConfigUpdate = (configFile: any): void => {
     setConfig(configFile);
     const initialFormData = getInitialFormData(configFile);
-    setDocumentMeta([initialFormData]);
+    setDocumentsList([initialFormData]);
     history.push("/form");
   };
 
