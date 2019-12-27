@@ -7,14 +7,10 @@ export const readFileData = (acceptedFiles: File[], handleUpdate: Function, hand
     try {
       const json = JSON.parse(reader.result);
       handleUpdate(json);
-    } catch(e) {
+    } catch (e) {
       handleFileError(e);
     }
   };
-
-  reader.onerror = (e) => {
-    console.log(e)
-  }
 
   acceptedFiles.map(file => reader.readAsText(file));
 };

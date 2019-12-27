@@ -6,6 +6,8 @@ import { FormDataContext } from "../../contexts/FormDataContext";
 import { ConfigContext } from "../../contexts/ConfigurationContext";
 import { UploadDataView } from "./UploadDataView";
 import { DisplayPreview } from "./DisplayPreview";
+import { notifyError } from "../utils/toast";
+import { ISSUE_DOCUMENT } from "../Constant";
 
 const HeaderDiv = styled.div`
   background-color: dimgray;
@@ -18,9 +20,13 @@ const FormDisplay = (): ReactElement => {
   const { config } = useContext(ConfigContext);
 
   const handleSubmit = (formValues: Document): void => {
-    documentsMeta.splice(activeTab, 1, formValues);
-    setDocumentMeta(documentsMeta);
-    setWrappedDocument(formValues);
+    try {
+      documentsMeta.splice(activeTab, 1, formValues);
+      setDocumentMeta(documentsMeta);
+      setWrappedDocument(formValues);
+    } catch (e) {
+      notifyError(ISSUE_DOCUMENT.ERROR);
+    }
   };
 
   return (
