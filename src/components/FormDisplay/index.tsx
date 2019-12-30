@@ -25,7 +25,7 @@ const FormDisplay = (): ReactElement => {
       setDocumentsList(documentsList);
       setDocument(document);
     } catch (e) {
-      notifyError(ISSUE_DOCUMENT.ERROR);
+      notifyError(ISSUE_DOCUMENT.ERROR + ", " + e.message);
     }
   };
 

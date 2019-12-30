@@ -5,5 +5,5 @@ export const DATA_FILE_UPLOAD = {
 
 export const ISSUE_DOCUMENT = {
   SUCCESS: "Document has been issued successfully",
-  ERROR: "Document can not be issue"
+  ERROR: "Document can not be issued"
 };
