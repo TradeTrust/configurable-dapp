@@ -7,6 +7,8 @@ import { ConfigContext } from "../../contexts/ConfigurationContext";
 import { UploadDataView } from "./UploadDataView";
 import { DisplayPreview } from "./DisplayPreview";
 import { PopupModal } from "../Common/PopupModal";
+import { notifyError } from "../utils/toast";
+import { ISSUE_DOCUMENT } from "../Constant";
 
 const HeaderDiv = styled.div`
   background-color: dimgray;
@@ -31,16 +33,20 @@ const FooterModal = ({ toggleConfirmationModal, publishDocument }: FooterModalPr
 );
 
 const FormDisplay = (): ReactElement => {
-  const { documentsMeta, setDocumentMeta, setWrappedDocument } = useContext(FormDataContext);
-  const [activeTab] = useState(0);
+  const { documentsList, setDocumentsList, setDocument } = useContext(FormDataContext);
+  const [activeTab] = useState(0); //Add setActiveTab method to update it when handling multitab
   const [showConfirmationModal, toggleConfirmationModal] = useState(false);
   const { config } = useContext(ConfigContext);
 
-  const handleSubmit = (formValues: Document): void => {
-    documentsMeta.splice(activeTab, 1, formValues);
-    setDocumentMeta(documentsMeta);
-    setWrappedDocument(formValues);
-    toggleConfirmationModal(true);
+  const handleSubmit = (document: Document): void => {
+    try {
+      documentsList.splice(activeTab, 1, document);
+      setDocumentsList(documentsList);
+      setDocument(document);
+      toggleConfirmationModal(true);
+    } catch (e) {
+      notifyError(ISSUE_DOCUMENT.ERROR + ", " + e.message);
+    }
   };
 
   return (
@@ -60,11 +66,11 @@ const FormDisplay = (): ReactElement => {
         </PopupModal>
       )}
       <HeaderDiv id="form-header" className="container">
-        {documentsMeta[activeTab] && <DisplayPreview document={documentsMeta[activeTab]} />}
+        {documentsList[activeTab] && <DisplayPreview document={documentsList[activeTab]} />}
         <UploadDataView />
       </HeaderDiv>
       <div id="form-body" className="container p-2 bg-light">
-        <JsonSchemaForm formSchema={config.formSchema} formData={documentsMeta} onSubmit={handleSubmit} />
+        <JsonSchemaForm formSchema={config.formSchema} formData={documentsList} onSubmit={handleSubmit} />
       </div>
     </>
   );

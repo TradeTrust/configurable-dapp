@@ -16,7 +16,9 @@ interface RouteProps {
 
 const ValidatedRoute = ({ component: Component, ...rest }: RouteProps): ReactElement => {
   const { config } = useContext(ConfigContext);
-  return <Route {...rest} render={props => (!isEmpty(config) ? <Component {...props} /> : <Redirect to="/" />)} />;
+  //update with config authentication to access the route
+  const isValidated = !isEmpty(config) && config.formSchema.length > 0;
+  return <Route {...rest} render={props => (isValidated ? <Component {...props} /> : <Redirect to="/" />)} />;
 };
 
 export const Routes = (): ReactElement => (

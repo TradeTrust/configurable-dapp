@@ -7,7 +7,9 @@ import { css } from "@emotion/core";
 import styled from "@emotion/styled";
 import { getLogger } from "../../logger";
 import { readFileData } from "../utils/file";
-import { getInitialFormData } from "../utils/config";
+import { notifyError } from "../utils/toast";
+import { DATA_FILE_UPLOAD } from "../Constant";
+import { getDocumentMetaData } from "../utils/config";
 
 const { trace } = getLogger("components/ConfigDropzone");
 
@@ -42,13 +44,13 @@ const SelectButton = styled.button`
 
 const ConfigDropzoneContainer = (): ReactElement => {
   const { config, setConfig } = useContext(ConfigContext);
-  const { setDocumentMeta } = useContext(FormDataContext);
+  const { setDocumentsList } = useContext(FormDataContext);
 
   const history = useHistory();
   const processConfigUpdate = (configFile: any): void => {
     setConfig(configFile);
-    const initialFormData = getInitialFormData(configFile);
-    setDocumentMeta([initialFormData]);
+    const documentMeta = getDocumentMetaData(configFile);
+    setDocumentsList([documentMeta]);
     history.push("/form");
   };
 
@@ -60,9 +62,13 @@ const ConfigDropzone = (props: any): ReactElement => {
     props.onConfigUpdate(configFile);
   };
 
+  const handleFileError = (e: any): void => {
+    notifyError(DATA_FILE_UPLOAD.ERROR + ", " + e.message);
+  };
+
   const handleFileDrop = (acceptedFiles: File[]): void => {
     trace(acceptedFiles);
-    readFileData(acceptedFiles, handleConfigUpdate);
+    readFileData(acceptedFiles, handleConfigUpdate, handleFileError);
   };
 
   return (

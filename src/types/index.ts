@@ -1,6 +1,29 @@
 import { FormProps } from "react-jsonschema-form";
 type JsonSchema = FormProps<any>["schema"];
 
+export interface EncryptedJsonWallet {
+  // commonplace web3 encrypted wallet object shape, geth parity etc
+  address: string;
+  id: string;
+  version: number;
+  Crypto: {
+    cipher: string;
+    cipherparams: {
+      iv: string;
+    };
+    ciphertext: string;
+    kdf: string;
+    kdfparams: {
+      salt: string;
+      n: number;
+      dklen: number;
+      p: number;
+      r: number;
+    };
+    mac: string;
+  };
+}
+
 export type DocumentMeta = {
   name: string;
   $template: {
@@ -20,7 +43,7 @@ export type DocumentMeta = {
 
 export interface Config {
   application: {
-    wallet: object;
+    wallet: Partial<EncryptedJsonWallet>;
     network: string;
   };
   documentMeta: DocumentMeta;
