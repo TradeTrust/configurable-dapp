@@ -24,7 +24,7 @@ export const UploadDataView = (): ReactElement => {
   const handleFileUpload = (e: any): void => {
     readFileData([...e.target.files], updateFormData, handleFileError);
   };
-  
+
   return (
     <label className="btn btn-primary m-3">
       Upload Data File <input type="file" onChange={e => handleFileUpload(e)} hidden />

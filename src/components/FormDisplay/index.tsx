@@ -22,12 +22,12 @@ const FormDisplay = (): ReactElement => {
   const handleSubmit = (document: Document): void => {
     try {
       documentsList.splice(activeTab, 1, document);
-    setDocumentsList(documentsList);
-    setDocument(document);
+      setDocumentsList(documentsList);
+      setDocument(document);
     } catch (e) {
       notifyError(ISSUE_DOCUMENT.ERROR);
     }
-  }
+  };
 
   return (
     <>
