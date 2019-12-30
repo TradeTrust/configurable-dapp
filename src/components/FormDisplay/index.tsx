@@ -53,7 +53,10 @@ const FormDisplay = (): ReactElement => {
             <FooterModal toggleConfirmationModal={toggleConfirmationModal} publishDocument={toggleConfirmationModal} />
           }
         >
+        <>
           <div>Are you sure you want to publish document. </div>
+          <p> The estimated cost is 0.000045 eth and time is 10 sec </p>
+          </>
         </PopupModal>
       )}
       <HeaderDiv id="form-header" className="container">
