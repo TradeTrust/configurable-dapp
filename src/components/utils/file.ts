@@ -1,4 +1,4 @@
-export const readFileData = (acceptedFiles: any[], handleUpdate: Function): void => {
+export const readFileData = (acceptedFiles: File[], handleUpdate: Function): void => {
   const reader = new FileReader();
   reader.onload = () => {
     try {

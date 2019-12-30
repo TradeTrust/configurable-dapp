@@ -40,6 +40,7 @@ const SelectButton = styled.button`
 
 const ConfigDropzoneContainer = (): ReactElement => {
   const { config, setConfig } = useContext(ConfigContext);
+
   const history = useHistory();
   const processConfigUpdate = (configFile: any): void => {
     setConfig(configFile);
@@ -54,7 +55,7 @@ const ConfigDropzone = (props: any): ReactElement => {
     props.onConfigUpdate(configFile);
   };
 
-  const handleFileDrop = (acceptedFiles: File): void => {
+  const handleFileDrop = (acceptedFiles: File[]): void => {
     trace(acceptedFiles);
     readFileData(acceptedFiles, handleConfigUpdate);
   };
@@ -63,10 +64,10 @@ const ConfigDropzone = (props: any): ReactElement => {
     <div className="h-100">
       <div className="row h-25" />
       <div className="row h-50">
-        <div className="col">
+        <div id="dropzone-container" className="col">
           <Dropzone onDrop={handleFileDrop}>
             {({ getRootProps, getInputProps }) => (
-              <section className="h-100">
+              <section id="document-dropzone" className="h-100">
                 <DropzoneDiv
                   {...getRootProps({
                     className: "p-3"

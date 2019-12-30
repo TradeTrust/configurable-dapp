@@ -1,44 +1,52 @@
 import React, { ReactElement } from "react";
+import { Config } from "../../types";
 
-interface Props {
+interface ConfigProviderProps {
   children: ReactElement;
 }
 
-export const ConfigContext = React.createContext({
-  config: {
-    application: {
-      wallet: {},
-      network: "ethereum-ropsten"
-    },
-    documentMeta: {
-      name: "Maersk Bill of Lading",
-      $template: {
-        name: "BILL_OF_LADING",
-        type: "EMBEDDED_RENDERER",
-        url: "https://demo-cnm.open-attestation.com"
-      },
-      issuers: [
-        {
-          name: "DEMO STORE",
-          tokenRegistry: "",
-          identityProof: {
-            type: "DNS-TXT",
-            location: "tradetrust.io"
-          }
-        }
-      ]
-    },
-    formSchema: []
+interface ConfigProviderState {
+  config: Config;
+  setConfig: (config: Config) => void;
+}
+
+const initialConfig = {
+  application: {
+    wallet: {},
+    network: "ethereum-ropsten"
   },
-  setConfig: (config: any) => config
+  documentMeta: {
+    name: "",
+    $template: {
+      name: "",
+      type: "EMBEDDED_RENDERER",
+      url: ""
+    },
+    issuers: [
+      {
+        name: "",
+        tokenRegistry: "",
+        identityProof: {
+          type: "DNS-TXT",
+          location: ""
+        }
+      }
+    ]
+  },
+  formSchema: []
+};
+
+export const ConfigContext = React.createContext<ConfigProviderState>({
+  config: initialConfig,
+  setConfig: (config: Config) => config
 });
 
-export class ConfigProvider extends React.Component {
-  constructor(props: Props) {
+export class ConfigProvider extends React.Component<ConfigProviderProps, ConfigProviderState> {
+  constructor(props: ConfigProviderProps) {
     super(props);
     this.state = {
-      config: {},
-      setConfig: (config: any) => {
+      config: initialConfig,
+      setConfig: (config: Config) => {
         this.setState(prevState => {
           return { ...prevState, config };
         });

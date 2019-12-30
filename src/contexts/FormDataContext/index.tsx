@@ -1,18 +1,40 @@
 import React, { ReactElement } from "react";
+import { issueDocument } from "@govtechsg/tradetrust-schema";
+import { Document, SignedDocument } from "@govtechsg/decentralized-renderer-react-components";
 
-export const FormDataContext = React.createContext({
-  formData: [],
-  setFormData: (formData: object) => formData
+interface FormDataState {
+  documentsList: Array<Document>;
+  setDocumentsList: (documentsList: Document[]) => void;
+  wrappedDocument: Partial<SignedDocument<any>>;
+  setDocument: (document: Document) => void;
+}
+
+export const FormDataContext = React.createContext<FormDataState>({
+  documentsList: [],
+  setDocumentsList: (documentsList: Document[]) => documentsList,
+  wrappedDocument: {},
+  setDocument: (document: Document) => document
 });
 
-export class FormDataProvider extends React.Component {
-  constructor(props) {
+interface FormDataProps {
+  children: ReactElement;
+}
+
+export class FormDataProvider extends React.Component<FormDataProps, FormDataState> {
+  constructor(props: FormDataProps) {
     super(props);
     this.state = {
-      formData: [],
-      setFormData: (formData: object) => {
+      documentsList: [],
+      wrappedDocument: {},
+      setDocumentsList: (documentsList: Document[]) => {
         this.setState(prevState => {
-          return { ...prevState, formData };
+          return { ...prevState, documentsList };
+        });
+      },
+      setDocument: (document: Document) => {
+        const wrappedDocument = issueDocument(document);
+        this.setState(prevState => {
+          return { ...prevState, wrappedDocument };
         });
       }
     };
