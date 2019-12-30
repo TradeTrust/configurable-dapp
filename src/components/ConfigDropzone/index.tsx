@@ -1,13 +1,11 @@
 import React, { useContext, ReactElement } from "react";
 import { useHistory } from "react-router-dom";
 import { ConfigContext } from "../../contexts/ConfigurationContext";
-import { FormDataContext } from "../../contexts/FormDataContext";
 import Dropzone from "react-dropzone";
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
 import { getLogger } from "../../logger";
 import { readFileData } from "../utils/file";
-import { getInitialFormData } from "../utils/config";
 
 const { trace } = getLogger("components/ConfigDropzone");
 
@@ -42,13 +40,10 @@ const SelectButton = styled.button`
 
 const ConfigDropzoneContainer = (): ReactElement => {
   const { config, setConfig } = useContext(ConfigContext);
-  const { setDocumentMeta } = useContext(FormDataContext);
 
   const history = useHistory();
   const processConfigUpdate = (configFile: any): void => {
     setConfig(configFile);
-    const initialFormData = getInitialFormData(configFile);
-    setDocumentMeta([initialFormData]);
     history.push("/form");
   };
 

@@ -2,6 +2,7 @@ import React, { ReactElement } from "react";
 import { ethers, providers } from "ethers";
 import { getWeb3FromEnvironment } from "./utils";
 import { getLogger } from "../../logger";
+import { EncryptedJsonWallet } from "../../types";
 
 const { trace } = getLogger("Web3Context");
 
@@ -16,28 +17,6 @@ export interface Web3ContextProps {
 // @ts-ignore: this context is not supposed to be used separately from the provider component below so the defaultValue will never be used
 export const Web3Context = React.createContext<Web3ContextProps>();
 
-interface EncryptedJsonWallet {
-  // commonplace web3 encrypted wallet object shape, geth parity etc
-  address: string;
-  id: string;
-  version: number;
-  Crypto: {
-    cipher: string;
-    cipherparams: {
-      iv: string;
-    };
-    ciphertext: string;
-    kdf: string;
-    kdfparams: {
-      salt: string;
-      n: number;
-      dklen: number;
-      p: number;
-      r: number;
-    };
-    mac: string;
-  };
-}
 export class Web3Provider extends React.Component<any, Web3ContextProps> {
   constructor(props: any) {
     super(props);
