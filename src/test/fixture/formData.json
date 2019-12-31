@@ -1,6 +1,7 @@
 [ {
 "id": "123",
 "name": "Demo Document",
+"initialTokenOwnerAddress": "0x4BD9B0838FcC487DBc883ad0E417aEd98001268a",
 "consignee": {
     "name": "Demo Consignee",
     "type": "To the owner of"
