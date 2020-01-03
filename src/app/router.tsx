@@ -7,6 +7,7 @@ import { ConfigContext } from "../contexts/ConfigurationContext";
 const ConfigDropzoneContainer = lazy((): any => import("../components/ConfigDropzone"));
 const FormDisplay = lazy((): any => import("../components/FormDisplay"));
 const Web3EnabledWidget = lazy((): any => import("../components/ExampleWeb3Widget"));
+const PublishedDocumentView = lazy((): any => import("../components/PublishedDocumentView"));
 
 interface RouteProps {
   component: ComponentType<any>;
@@ -27,6 +28,7 @@ export const Routes = (): ReactElement => (
       <Switch>
         <Route exact path="/" component={ConfigDropzoneContainer} />
         <ValidatedRoute exact path="/form" component={FormDisplay} />
+        <Route exact path="/published" component={PublishedDocumentView} />
         <Route exact path="/web3-example" component={Web3EnabledWidget} />
       </Switch>
     </Suspense>
