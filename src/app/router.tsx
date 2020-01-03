@@ -28,7 +28,7 @@ export const Routes = (): ReactElement => (
       <Switch>
         <Route exact path="/" component={ConfigDropzoneContainer} />
         <ValidatedRoute exact path="/form" component={FormDisplay} />
-        <Route exact path="/published" component={PublishedDocumentView} />
+        <ValidatedRoute exact path="/published" component={PublishedDocumentView} />
         <Route exact path="/web3-example" component={Web3EnabledWidget} />
       </Switch>
     </Suspense>
