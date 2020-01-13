@@ -25,6 +25,7 @@
     "react-redux": "^7.1.3",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
+    "react-toastify": "^5.4.1",
     "testcafe": "^1.7.1",
     "web3": "^1.2.4"
   },
@@ -69,6 +70,7 @@
     "babel-loader": "8.0.6",
     "brotli-webpack-plugin": "1.1.0",
     "compression-webpack-plugin": "3.0.0",
+    "css-loader": "^3.4.0",
     "eslint": "6.5.1",
     "eslint-config-prettier": "6.4.0",
     "eslint-plugin-jest": "22.19.0",
