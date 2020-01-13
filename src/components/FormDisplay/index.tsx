@@ -54,7 +54,7 @@ const FormDisplay = (): ReactElement => {
       await initializeTokenInstance({ document: wrappedDocument, web3Provider: web3, wallet });
       await mintToken(wrappedDocument, initialTokenOwnerAddress);
       history.push("/published");
-    } catch(e) {
+    } catch (e) {
       notifyError(ISSUE_DOCUMENT.ERROR + ", " + e.message);
     }
   };
