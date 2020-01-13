@@ -9,7 +9,7 @@
     "issuers": [
         {
         "name": "DEMO STORE",
-        "tokenRegistry": "0x48399Fb88bcD031C556F53e93F690EEC07963Af3",
+        "tokenRegistry": "0xCD2dcF53B001b3998FFF7a3A13CB74bbaB27723A",
         "identityProof": {
           "type": "DNS-TXT",
           "location": "tradetrust.io"
@@ -18,24 +18,25 @@
       ]
     },
   "wallet": {
-    "address": "1fc5c8f02c375edfe17ec005a047b9e945a6e446",
-    "id": "e235cd57-0e74-4e5c-8bff-00f2de552584",
-    "version": 3,
-    "Crypto": {
-      "cipher": "aes-128-ctr",
-      "cipherparams": { "iv": "947d7e91a2cbc6207f826f020fe4438a" },
-      "ciphertext": "22152c01515bcee86b8750ab487928c2906d9ba045240165248adaf77bc073b4",
-      "kdf": "scrypt",
-      "kdfparams": {
-        "salt": "b530d2233eca28ba4fa593b027efec563f0f182e60e53caf3cabf53a2871a4a3",
-        "n": 131072,
-        "dklen": 32,
-        "p": 1,
-        "r": 8
+    "address":"67b5bc373caa527cee654d6a0f629ba1e84fad02",
+    "id":"c829be9f-2e80-4425-a3b1-0170d5cb6a6a",
+    "version":3,
+    "Crypto":{
+      "cipher":"aes-128-ctr",
+      "cipherparams":{ 
+        "iv":"abc..."
         },
-      "mac": "6387dd75b6a113908644d01557855389af20f614c581c52bbcdd7c83be3f430b"
-      }
-  },
+        "ciphertext":"b43...",
+        "kdf":"scrypt",
+        "kdfparams":{
+          "salt":"046b5e...",
+          "n":131072,
+          "dklen":32,
+          "p":1,
+          "r":8},
+          "mac":"d564..."
+          }
+        },
   "formSchema": [{
   "id": "xyz",
   "name": "DEMO CNM",
