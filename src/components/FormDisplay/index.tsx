@@ -25,11 +25,11 @@ const FormDisplay = (): ReactElement => {
   const { web3, wallet } = useContext(Web3Context);
   const history = useHistory();
 
-  const publishDocument = async (newOwner: string): Promise<void> => {
+  const publishDocument = async (initialTokenOwnerAddress: string): Promise<void> => {
     if (!wrappedDocument || !web3 || !wallet) throw new Error("Can not initialize the token instance");
 
     const instance = new WriteableToken({ document: wrappedDocument, web3Provider: web3, wallet });
-    await instance.mint(wrappedDocument, newOwner);
+    await instance.mint(wrappedDocument, initialTokenOwnerAddress);
     history.push("/published");
   };
 
@@ -37,12 +37,12 @@ const FormDisplay = (): ReactElement => {
     try {
       documentsList.splice(activeTab, 1, document);
       setDocumentsList(documentsList);
-      const newOwner = pick(document, "newOwner") as string;
-      if (!newOwner) throw new Error("Please enter the new owner value to mint");
+      const initialTokenOwnerAddress = pick(document, "initialTokenOwnerAddress") as string;
+      if (!initialTokenOwnerAddress) throw new Error("Please enter the new owner value to mint");
 
-      omit(document, "newOwner");
+      omit(document, "initialTokenOwnerAddress");
       setDocument(document);
-      publishDocument(newOwner);
+      publishDocument(initialTokenOwnerAddress);
     } catch (e) {
       notifyError(ISSUE_DOCUMENT.ERROR + ", " + e.message);
     }
