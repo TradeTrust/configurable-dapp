@@ -9,6 +9,7 @@ import { ConfigContext } from "../../contexts/ConfigurationContext";
 import { Web3Context } from "../../contexts/Web3Context";
 import { UploadDataView } from "./UploadDataView";
 import { DisplayPreview } from "./DisplayPreview";
+import { PopupModal } from "../Common/PopupModal";
 import { notifyError } from "../utils/toast";
 import { ISSUE_DOCUMENT } from "../Constant";
 import { initializeTokenInstance, mintToken } from "../../services/token";
@@ -18,31 +19,53 @@ const HeaderDiv = styled.div`
   text-align: right;
 `;
 
+interface FooterModalProps {
+  toggleConfirmationModal: (i: boolean) => void;
+  publishDocument: (val: boolean) => void;
+}
+
+//add publish document method to publish it on blockchain.
+const FooterModal = ({ toggleConfirmationModal, publishDocument }: FooterModalProps): ReactElement => (
+  <>
+    <button type="button" className="btn btn-default" onClick={() => toggleConfirmationModal(false)}>
+      Close
+    </button>
+    <button type="button" className="btn btn-primary" onClick={() => publishDocument(false)}>
+      Ok
+    </button>
+  </>
+);
+
 const FormDisplay = (): ReactElement => {
   const { documentsList, wrappedDocument, setDocumentsList, setDocument } = useContext(FormDataContext);
   const [activeTab] = useState(0); //Add setActiveTab method to update it when handling multitab
+  const [showConfirmationModal, toggleConfirmationModal] = useState(false);
   const { config } = useContext(ConfigContext);
   const { web3, wallet } = useContext(Web3Context);
   const history = useHistory();
 
-  const publishDocument = async (initialTokenOwnerAddress: string): Promise<void> => {
-    if (!wrappedDocument || !web3 || !wallet) throw new Error("Can not initialize the token instance");
+  const publishDocument = async (): Promise<void> => {
+    try {
+      if (!wrappedDocument || !web3 || !wallet) throw new Error("Can not initialize the token instance");
+      const document: Document = documentsList[activeTab];
+      const initialTokenOwnerAddress = pick(document, "initialTokenOwnerAddress") as string;
+      if (!initialTokenOwnerAddress) throw new Error("Please enter the new owner value to mint");
 
-    await initializeTokenInstance({ document: wrappedDocument, web3Provider: web3, wallet });
-    await mintToken(wrappedDocument, initialTokenOwnerAddress);
-    history.push("/published");
+      await initializeTokenInstance({ document: wrappedDocument, web3Provider: web3, wallet });
+      await mintToken(wrappedDocument, initialTokenOwnerAddress);
+      history.push("/published");
+    } catch(e) {
+      notifyError(ISSUE_DOCUMENT.ERROR + ", " + e.message);
+    }
   };
 
   const handleSubmit = (document: Document): void => {
     try {
       documentsList.splice(activeTab, 1, document);
       setDocumentsList(documentsList);
-      const initialTokenOwnerAddress = pick(document, "initialTokenOwnerAddress") as string;
-      if (!initialTokenOwnerAddress) throw new Error("Please enter the new owner value to mint");
-
       omit(document, "initialTokenOwnerAddress");
       setDocument(document);
-      publishDocument(initialTokenOwnerAddress);
+      toggleConfirmationModal(true);
     } catch (e) {
       notifyError(ISSUE_DOCUMENT.ERROR + ", " + e.message);
     }
@@ -50,6 +73,20 @@ const FormDisplay = (): ReactElement => {
 
   return (
     <>
+      {showConfirmationModal && (
+        <PopupModal
+          title="Publish Document"
+          toggleDisplay={toggleConfirmationModal}
+          footerComponent={
+            <FooterModal toggleConfirmationModal={toggleConfirmationModal} publishDocument={publishDocument} />
+          }
+        >
+          <>
+            <div>Are you sure you want to publish document. </div>
+            <p> The estimated cost is 0.000045 eth and time is 10 sec </p>
+          </>
+        </PopupModal>
+      )}
       <HeaderDiv id="form-header" className="container">
         {documentsList[activeTab] && <DisplayPreview document={documentsList[activeTab]} />}
         <UploadDataView />
