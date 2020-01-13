@@ -1,17 +1,17 @@
 import React, { useContext, useState, ReactElement } from "react";
 import { useHistory } from "react-router-dom";
 import { JsonSchemaForm } from "@govtechsg/tradetrust-react-component";
-import { WriteableToken } from "@govtechsg/oa-token";
 import { Document } from "@govtechsg/decentralized-renderer-react-components";
 import styled from "@emotion/styled";
+import { pick, omit } from "lodash";
 import { FormDataContext } from "../../contexts/FormDataContext";
 import { ConfigContext } from "../../contexts/ConfigurationContext";
 import { Web3Context } from "../../contexts/Web3Context";
 import { UploadDataView } from "./UploadDataView";
 import { DisplayPreview } from "./DisplayPreview";
-import { pick, omit } from "lodash";
 import { notifyError } from "../utils/toast";
 import { ISSUE_DOCUMENT } from "../Constant";
+import { initializeTokenInstance, mintToken } from "../../services/token";
 
 const HeaderDiv = styled.div`
   background-color: dimgray;
@@ -28,8 +28,8 @@ const FormDisplay = (): ReactElement => {
   const publishDocument = async (initialTokenOwnerAddress: string): Promise<void> => {
     if (!wrappedDocument || !web3 || !wallet) throw new Error("Can not initialize the token instance");
 
-    const instance = new WriteableToken({ document: wrappedDocument, web3Provider: web3, wallet });
-    await instance.mint(wrappedDocument, initialTokenOwnerAddress);
+    await initializeTokenInstance({ document: wrappedDocument, web3Provider: web3, wallet });
+    await mintToken(wrappedDocument, initialTokenOwnerAddress);
     history.push("/published");
   };
 

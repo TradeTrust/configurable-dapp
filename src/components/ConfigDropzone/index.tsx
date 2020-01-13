@@ -2,6 +2,7 @@ import React, { useContext, ReactElement } from "react";
 import { useHistory } from "react-router-dom";
 import { ConfigContext } from "../../contexts/ConfigurationContext";
 import { FormDataContext } from "../../contexts/FormDataContext";
+import {Web3Context} from "../../contexts/Web3Context";
 import Dropzone from "react-dropzone";
 import { css } from "@emotion/core";
 import styled from "@emotion/styled";
@@ -9,7 +10,7 @@ import { getLogger } from "../../logger";
 import { readFileData } from "../utils/file";
 import { notifyError } from "../utils/toast";
 import { DATA_FILE_UPLOAD } from "../Constant";
-import { getDocumentMetaData } from "../utils/config";
+import { getDocumentMetaData, getWallet } from "../utils/config";
 
 const { trace } = getLogger("components/ConfigDropzone");
 
@@ -45,12 +46,15 @@ const SelectButton = styled.button`
 const ConfigDropzoneContainer = (): ReactElement => {
   const { config, setConfig } = useContext(ConfigContext);
   const { setDocumentsList } = useContext(FormDataContext);
+  const { setWallet } = useContext(Web3Context);
 
   const history = useHistory();
   const processConfigUpdate = (configFile: any): void => {
     setConfig(configFile);
     const documentMeta = getDocumentMetaData(configFile);
     setDocumentsList([documentMeta]);
+    const wallet = getWallet(configFile);
+    setWallet(wallet, "password");
     history.push("/form");
   };
 
@@ -67,7 +71,7 @@ const ConfigDropzone = (props: any): ReactElement => {
   };
 
   const handleFileDrop = (acceptedFiles: File[]): void => {
-    trace(acceptedFiles);
+    trace(`Accepted files: ${acceptedFiles}`);
     readFileData(acceptedFiles, handleConfigUpdate, handleFileError);
   };
 
