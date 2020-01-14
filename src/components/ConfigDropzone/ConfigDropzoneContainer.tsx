@@ -12,6 +12,7 @@ const ConfigDropzoneContainer = (): ReactElement => {
   const { setWallet } = useContext(Web3Context);
 
   const [isPasswordModalVisible, togglePasswordModal] = useState(false);
+  const [showLoader, toggleLoader] = useState(false);
   const history = useHistory();
 
   const processConfigUpdate = (configFile: any): void => {
@@ -23,8 +24,11 @@ const ConfigDropzoneContainer = (): ReactElement => {
 
   const setWalletData = async (password: string): Promise<void> => {
     try {
+      toggleLoader(true);
       const wallet = getWalletMeta(config);
       await setWallet(wallet, password);
+      togglePasswordModal(false);
+      toggleLoader(false);
       history.push("/form");
     } catch (e) {
       console.error(e);
@@ -36,6 +40,7 @@ const ConfigDropzoneContainer = (): ReactElement => {
       config={config}
       onConfigUpdate={processConfigUpdate}
       setWalletData={setWalletData}
+      showLoader={showLoader}
       isPasswordModalVisible={isPasswordModalVisible}
       togglePasswordModal={togglePasswordModal}
     />

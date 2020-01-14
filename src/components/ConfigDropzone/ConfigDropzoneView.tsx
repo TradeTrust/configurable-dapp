@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from "react";
-
+import Loader from 'react-loader-spinner';
 import { PopupModal, FooterModal } from "../Common";
 import { DropzoneView } from "./DropzoneView";
 import { getLogger } from "../../logger";
@@ -10,6 +10,7 @@ const { trace } = getLogger("components/ConfigDropzone");
 
 export const ConfigDropzone = (props: any): ReactElement => {
   const [password, setPassword] = useState("");
+
   const handleConfigUpdate = (configFile: any): void => {
     props.onConfigUpdate(configFile);
   };
@@ -30,14 +31,20 @@ export const ConfigDropzone = (props: any): ReactElement => {
 
   return (
     <>
-      {props.isPasswordModalVisible && (
+      {props.isPasswordModalVisible &&  (
         <PopupModal
           title="Enter Password"
           toggleDisplay={props.togglePasswordModal}
-          footerComponent={<FooterModal toggleConfirmationModal={props.togglePasswordModal} onSubmit={setWallet} />}
+          footerComponent={props.showLoader ? <></> : <FooterModal toggleConfirmationModal={props.togglePasswordModal} onSubmit={setWallet} />}
         >
           <>
-            <input type="text" onChange={e => setPassword(e.target.value)} />
+            { props.showLoader ? <Loader
+         type="TailSpin"
+         color="#00BFFF"
+         height={100}
+         width={100}
+
+      /> : <input type="text" onChange={e => setPassword(e.target.value)} />}
           </>
         </PopupModal>
       )}
