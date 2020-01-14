@@ -12,6 +12,7 @@ const ConfigDropzoneContainer = (): ReactElement => {
   const { setWallet } = useContext(Web3Context);
 
   const [isPasswordModalVisible, togglePasswordModal] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
   const [showLoader, toggleLoader] = useState(false);
   const history = useHistory();
 
@@ -31,7 +32,8 @@ const ConfigDropzoneContainer = (): ReactElement => {
       toggleLoader(false);
       history.push("/form");
     } catch (e) {
-      console.error(e);
+      toggleLoader(false);
+      setPasswordError(e.message);
     }
   };
 
@@ -43,6 +45,7 @@ const ConfigDropzoneContainer = (): ReactElement => {
       showLoader={showLoader}
       isPasswordModalVisible={isPasswordModalVisible}
       togglePasswordModal={togglePasswordModal}
+      passwordError={passwordError}
     />
   );
 };
