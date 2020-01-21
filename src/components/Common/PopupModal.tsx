@@ -18,11 +18,22 @@ export const PopupModal = ({
   footerComponent
 }: PopupModalProps): ReactElement => {
   const [isFadeIn, setFadeIn] = useState(false);
+  const onKeyDown = (event: any) => {
+    event = event || window.event;
+    if (event.keyCode == 27) { // escape key
+      toggleDisplay(false);
+    }
+  };
 
   useEffect(() => {
     setTimeout(() => {
       setFadeIn(true);
     }, 0);
+
+    document.addEventListener("keydown", onKeyDown);
+    return function cleanup() {
+      document.removeEventListener("keydown", onKeyDown);
+    };
   }, []);
 
   return (
