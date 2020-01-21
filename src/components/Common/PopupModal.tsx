@@ -18,14 +18,16 @@ export const PopupModal = ({
   footerComponent
 }: PopupModalProps): ReactElement => {
   const [isFadeIn, setFadeIn] = useState(false);
-  const onKeyDown = (event: any) => {
-    event = event || window.event;
-    if (event.keyCode == 27) { // escape key
-      toggleDisplay(false);
-    }
-  };
 
   useEffect(() => {
+    const onKeyDown = (event: any) => {
+      event = event || window.event;
+      // escape key
+      if (event.keyCode == 27) {
+        toggleDisplay(false);
+      }
+    };
+
     setTimeout(() => {
       setFadeIn(true);
     }, 0);
@@ -34,12 +36,17 @@ export const PopupModal = ({
     return function cleanup() {
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, []);
+  }, [toggleDisplay]);
 
   return (
     <>
       <div className="modal-open">
-        <div id="preview-modal" className={`modal fade ${isFadeIn && "show"}`} role="dialog" style={{ display: "block" }}>
+        <div
+          id="preview-modal"
+          className={`modal fade ${isFadeIn && "show"}`}
+          role="dialog"
+          style={{ display: "block" }}
+        >
           <div className="modal-dialog modal-dialog-centered" style={containerStyle}>
             <form className="modal-content" onSubmit={() => toggleDisplay(false)}>
               <div className="modal-header">
