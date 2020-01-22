@@ -48,7 +48,6 @@ const FormDisplay = (): ReactElement => {
       setDocumentsList(documentsList);
       omit(document, "initialTokenOwnerAddress");
       setDocument(document);
-      history.push("/published");
       toggleConfirmationModal(true);
     } catch (e) {
       notifyError(ISSUE_DOCUMENT.ERROR + ", " + e.message);
