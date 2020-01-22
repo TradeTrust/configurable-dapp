@@ -8,6 +8,7 @@
     "@emotion/core": "10.0.21",
     "@emotion/styled": "10.0.17",
     "@govtechsg/decentralized-renderer-react-components": "^1.2.1",
+    "@govtechsg/oa-token": "^1.8.0",
     "@govtechsg/tradetrust-react-component": "^1.2.0",
     "@govtechsg/tradetrust-schema": "^1.1.0",
     "@hot-loader/react-dom": "16.10.2",

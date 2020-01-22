@@ -5,7 +5,7 @@ import { Document, SignedDocument } from "@govtechsg/decentralized-renderer-reac
 interface FormDataState {
   documentsList: Array<Document>;
   setDocumentsList: (documentsList: Document[]) => void;
-  wrappedDocument: Partial<SignedDocument<any>>;
+  wrappedDocument: SignedDocument<any>;
   setDocument: (document: Document) => void;
 }
 

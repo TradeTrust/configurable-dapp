@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from "react";
 import { Document } from "@govtechsg/decentralized-renderer-react-components";
 import { DocumentPreview } from "../DocumentPreview";
-import { PopupModal } from "../Common/PopupModal";
+import { PopupModal } from "../common/PopupModal";
 
 interface DocumentModalProps {
   document: Document;

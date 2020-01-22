@@ -9,7 +9,7 @@
     "issuers": [
         {
         "name": "DEMO STORE",
-        "tokenRegistry": "0x48399Fb88bcD031C556F53e93F690EEC07963Af3",
+        "tokenRegistry": "0xCD2dcF53B001b3998FFF7a3A13CB74bbaB27723A",
         "identityProof": {
           "type": "DNS-TXT",
           "location": "tradetrust.io"
@@ -17,6 +17,26 @@
         }
       ]
     },
+  "wallet": {
+    "address":"67b5bc373caa527cee654d6a0f629ba1e84fad02",
+    "id":"c829be9f-2e80-4425-a3b1-0170d5cb6a6a",
+    "version":3,
+    "Crypto":{
+      "cipher":"aes-128-ctr",
+      "cipherparams":{ 
+        "iv":"abc..."
+        },
+        "ciphertext":"b43...",
+        "kdf":"scrypt",
+        "kdfparams":{
+          "salt":"046b5e...",
+          "n":131072,
+          "dklen":32,
+          "p":1,
+          "r":8},
+          "mac":"d564..."
+          }
+        },
   "formSchema": [{
   "id": "xyz",
   "name": "DEMO CNM",
@@ -26,12 +46,19 @@
     "properties": {
       "id": {
         "type": "string",
-      "title": "ID",
+        "title": "ID",
         "ui": {
             "ui:autofocus": true,
             "ui:placeholder": "enter id for the document"
           }
         },
+      "initialTokenOwnerAddress": {
+        "type": "string",
+        "title": "Token Owner Address",
+        "ui": {
+          "ui:placeholder": "Ethereum Address to issue Token to"
+        }
+      },
       "name": {
         "type": "string",
         "title": "Name",
