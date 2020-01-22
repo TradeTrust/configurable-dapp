@@ -20,7 +20,7 @@ export const PopupModal = ({
   const [isFadeIn, setFadeIn] = useState(false);
 
   useEffect(() => {
-    const onKeyDown = (event: any) => {
+    const onKeyDown = (event: any): void => {
       event = event || window.event;
       // escape key
       if (event.keyCode == 27) {

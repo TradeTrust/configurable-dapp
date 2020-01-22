@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from "react";
 import Loader from "react-loader-spinner";
-import { PopupModal, FooterModal, SvgIcon } from "../Common";
+import { PopupModal, FooterModal, SvgIcon } from "../common";
 import { DropzoneView } from "./DropzoneView";
 import { getLogger } from "../../logger";
 import { readFileData } from "../utils/file";

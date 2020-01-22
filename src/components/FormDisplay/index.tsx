@@ -9,7 +9,7 @@ import { ConfigContext } from "../../contexts/ConfigurationContext";
 import { Web3Context } from "../../contexts/Web3Context";
 import { UploadDataView } from "./UploadDataView";
 import { DisplayPreview } from "./DisplayPreview";
-import { PopupModal, FooterModal } from "../Common";
+import { PopupModal, FooterModal } from "../common";
 import { notifyError } from "../utils/toast";
 import { ISSUE_DOCUMENT } from "../Constant";
 import { initializeTokenInstance, mintToken } from "../../services/token";
@@ -38,7 +38,6 @@ const FormDisplay = (): ReactElement => {
       await mintToken(wrappedDocument, initialTokenOwnerAddress);
       history.push("/published");
     } catch (e) {
-      console.log(e);
       notifyError(ISSUE_DOCUMENT.ERROR + ", " + e.message);
     }
   };
@@ -49,7 +48,6 @@ const FormDisplay = (): ReactElement => {
       setDocumentsList(documentsList);
       omit(document, "initialTokenOwnerAddress");
       setDocument(document);
-      history.push("/published");
       toggleConfirmationModal(true);
     } catch (e) {
       notifyError(ISSUE_DOCUMENT.ERROR + ", " + e.message);
@@ -65,8 +63,7 @@ const FormDisplay = (): ReactElement => {
           footerComponent={<FooterModal toggleConfirmationModal={toggleConfirmationModal} onSubmit={publishDocument} />}
         >
           <>
-            <div>Are you sure you want to publish document. </div>
-            <p> The estimated cost is 0.000045 eth and time is 10 sec </p>
+            <div>Are you sure you want to publish document ?</div>
           </>
         </PopupModal>
       )}
