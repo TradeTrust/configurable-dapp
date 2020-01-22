@@ -1,4 +1,5 @@
 import React, { useContext, useState, ReactElement } from "react";
+import { useHistory } from "react-router-dom";
 import { JsonSchemaForm } from "@govtechsg/tradetrust-react-component";
 import { Document } from "@govtechsg/decentralized-renderer-react-components";
 import styled from "@emotion/styled";
@@ -37,12 +38,14 @@ const FormDisplay = (): ReactElement => {
   const [activeTab] = useState(0); //Add setActiveTab method to update it when handling multitab
   const [showConfirmationModal, toggleConfirmationModal] = useState(false);
   const { config } = useContext(ConfigContext);
+  const history = useHistory();
 
   const handleSubmit = (document: Document): void => {
     try {
       documentsList.splice(activeTab, 1, document);
       setDocumentsList(documentsList);
       setDocument(document);
+      history.push("/published");
       toggleConfirmationModal(true);
     } catch (e) {
       notifyError(ISSUE_DOCUMENT.ERROR + ", " + e.message);

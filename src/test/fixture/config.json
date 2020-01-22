@@ -26,19 +26,12 @@
     "properties": {
       "id": {
         "type": "string",
-        "title": "ID",
+      "title": "ID",
         "ui": {
             "ui:autofocus": true,
             "ui:placeholder": "enter id for the document"
           }
         },
-      "initialTokenOwnerAddress": {
-        "type": "string",
-        "title": "Token Owner Address",
-        "ui": {
-          "ui:placeholder": "Ethereum Address to issue Token to"
-        }
-      },
       "name": {
         "type": "string",
         "title": "Name",
