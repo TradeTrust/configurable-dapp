@@ -13,6 +13,12 @@ import { PopupModal, FooterModal } from "../common";
 import { notifyError } from "../utils/toast";
 import { ISSUE_DOCUMENT } from "../Constant";
 import { initializeTokenInstance, mintToken } from "../../services/token";
+import Loader from "react-loader-spinner";
+import { Helpers } from "../../styles";
+
+const TalignCenter = styled.div`
+  ${Helpers.talignCenter}
+`;
 
 const HeaderDiv = styled.div`
   background-color: dimgray;
@@ -23,12 +29,14 @@ const FormDisplay = (): ReactElement => {
   const { documentsList, wrappedDocument, setDocumentsList, setDocument } = useContext(FormDataContext);
   const [activeTab] = useState(0); //Add setActiveTab method to update it when handling multitab
   const [showConfirmationModal, toggleConfirmationModal] = useState(false);
+  const [showLoader, toggleLoader] = useState(false);
   const { config } = useContext(ConfigContext);
   const { web3, wallet } = useContext(Web3Context);
   const history = useHistory();
 
   const publishDocument = async (): Promise<void> => {
     try {
+      toggleLoader(true);
       if (!wrappedDocument || !web3 || !wallet) throw new Error("Can not initialize the token instance");
       const document: Document = documentsList[activeTab];
       const initialTokenOwnerAddress = get(document, "initialTokenOwnerAddress", "");
@@ -36,8 +44,11 @@ const FormDisplay = (): ReactElement => {
 
       await initializeTokenInstance({ document: wrappedDocument, web3Provider: web3, wallet });
       await mintToken(wrappedDocument, initialTokenOwnerAddress);
+      toggleConfirmationModal(false);
+      toggleLoader(false);
       history.push("/published");
     } catch (e) {
+      toggleLoader(false);
       notifyError(ISSUE_DOCUMENT.ERROR + ", " + e.message);
     }
   };
@@ -59,12 +70,19 @@ const FormDisplay = (): ReactElement => {
       {showConfirmationModal && (
         <PopupModal
           title="Publish Document"
+          showLoader={showLoader}
           toggleDisplay={toggleConfirmationModal}
           footerComponent={<FooterModal toggleConfirmationModal={toggleConfirmationModal} onSubmit={publishDocument} />}
         >
-          <>
-            <div>Are you sure you want to publish document ?</div>
-          </>
+          {showLoader ? (
+            <TalignCenter>
+              <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />
+            </TalignCenter>
+          ) : (
+            <>
+              <div>Are you sure you want to publish document ?</div>
+            </>
+          )}
         </PopupModal>
       )}
       <HeaderDiv id="form-header" className="container">

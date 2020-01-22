@@ -87,6 +87,7 @@ export const ConfigDropzone = (props: any): ReactElement => {
       {props.isPasswordModalVisible && (
         <PopupModal
           title="Enter Password"
+          showLoader={props.showLoader}
           toggleDisplay={props.togglePasswordModal}
           footerComponent={
             props.showLoader ? (
