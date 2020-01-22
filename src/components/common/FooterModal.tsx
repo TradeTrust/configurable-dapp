@@ -10,7 +10,7 @@ export const FooterModal = ({ toggleConfirmationModal, onSubmit }: FooterModalPr
     <button type="button" className="btn btn-default" onClick={() => toggleConfirmationModal(false)}>
       Close
     </button>
-    <button type="button" className="btn btn-primary" onClick={() => onSubmit()}>
+    <button type="submit" className="btn btn-primary" onClick={() => onSubmit()}>
       Ok
     </button>
   </>
