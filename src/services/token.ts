@@ -41,16 +41,19 @@ export const deployEscrowContract = async ({
   document,
   web3Provider = undefined,
   wallet = undefined
-}: InitializeTokenInterface) => {
-  const documentData = getData(document);
+}: {
+  document: Document;
+  wallet: Wallet | undefined;
+  web3Provider: ethers.providers.BaseProvider | undefined;
+}): Promise<void> => {
   if (!web3Provider) throw new Error("Deploying contract requires web3 provider");
   if (!wallet) throw new Error("Deploying contract requires wallet");
-  const beneficiaryAddress = get(documentData, "beneficiaryAddress", "");
-  const holderAddress = get(documentData, "holderAddress", "");
-  const registryAddress = get(documentData, "issuers[0].tokenRegistry", "");
+  const beneficiaryAddress = get(document, "beneficiaryAddress", "");
+  const holderAddress = get(document, "holderAddress", "");
+  const registryAddress = get(document, "issuers[0].tokenRegistry", "");
   if (!registryAddress) throw new Error("Document is not a token");
   if (!beneficiaryAddress || !holderAddress) throw new Error("Please enter the holder and beneficiary address to mint");
-  titleEscrowOwnerInstance = await WriteableTitleEscrowOwner.deployEscrowContracxt({
+  titleEscrowOwnerInstance = await WriteableTitleEscrowOwner.deployEscrowContract({
     registryAddress,
     beneficiaryAddress,
     holderAddress,
@@ -59,6 +62,6 @@ export const deployEscrowContract = async ({
   });
 };
 
-export const getTitleEscrowOwner = () => {
+export const getTitleEscrowOwner = (): string => {
   return titleEscrowOwnerInstance.address;
 };

@@ -38,7 +38,8 @@ const FormDisplay = (): ReactElement => {
     try {
       toggleLoader(true);
       if (!wrappedDocument || !web3 || !wallet) throw new Error("Can not initialize the token instance");
-      await deployEscrowContract({ document: wrappedDocument, wallet, web3Provider: web3 });
+      const document: Document = documentsList[activeTab];
+      await deployEscrowContract({ document, wallet, web3Provider: web3 });
       const ownerAddress = getTitleEscrowOwner();
       await initializeTokenInstance({ document: wrappedDocument, web3Provider: web3, wallet });
       await mintToken(wrappedDocument, ownerAddress);
@@ -55,8 +56,8 @@ const FormDisplay = (): ReactElement => {
     try {
       documentsList.splice(activeTab, 1, document);
       setDocumentsList(documentsList);
-      omit(document, "initialTokenOwnerAddress");
-      setDocument(document);
+      const omittedDocument = omit(document, ["beneficiaryAddress", "holderAddress"]);
+      setDocument(omittedDocument);
       toggleConfirmationModal(true);
     } catch (e) {
       notifyError(ISSUE_DOCUMENT.ERROR + ", " + e.message);

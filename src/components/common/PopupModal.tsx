@@ -31,7 +31,7 @@ export const PopupModal = ({
             toggleDisplay(false);
           }
         case 13: // enter
-          document.getElementById("modal-button-submit")?.click();
+          document.getElementById("modal-button-submit")?.click(); //eslint-disable-line mdx/no-unused-expressions
         default:
       }
     };
