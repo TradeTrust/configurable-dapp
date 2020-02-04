@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { JsonSchemaForm } from "@govtechsg/tradetrust-react-component";
 import { Document } from "@govtechsg/decentralized-renderer-react-components";
 import styled from "@emotion/styled";
-import { get, omit } from "lodash";
+import { omit } from "lodash";
 import { FormDataContext } from "../../contexts/FormDataContext";
 import { ConfigContext } from "../../contexts/ConfigurationContext";
 import { Web3Context } from "../../contexts/Web3Context";
@@ -12,7 +12,7 @@ import { DisplayPreview } from "./DisplayPreview";
 import { PopupModal, FooterModal } from "../common";
 import { notifyError } from "../utils/toast";
 import { ISSUE_DOCUMENT } from "../Constant";
-import { initializeTokenInstance, mintToken } from "../../services/token";
+import { initializeTokenInstance, mintToken, getTitleEscrowOwner, deployEscrowContract } from "../../services/token";
 import Loader from "react-loader-spinner";
 import { Helpers } from "../../styles";
 
@@ -38,12 +38,10 @@ const FormDisplay = (): ReactElement => {
     try {
       toggleLoader(true);
       if (!wrappedDocument || !web3 || !wallet) throw new Error("Can not initialize the token instance");
-      const document: Document = documentsList[activeTab];
-      const initialTokenOwnerAddress = get(document, "initialTokenOwnerAddress", "");
-      if (!initialTokenOwnerAddress) throw new Error("Please enter the new owner value to mint");
-
+      await deployEscrowContract({ document: wrappedDocument, wallet, web3Provider: web3 });
+      const ownerAddress = getTitleEscrowOwner();
       await initializeTokenInstance({ document: wrappedDocument, web3Provider: web3, wallet });
-      await mintToken(wrappedDocument, initialTokenOwnerAddress);
+      await mintToken(wrappedDocument, ownerAddress);
       toggleConfirmationModal(false);
       toggleLoader(false);
       history.push("/published");

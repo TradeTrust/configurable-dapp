@@ -9,7 +9,7 @@
     "issuers": [
         {
         "name": "DEMO STORE",
-        "tokenRegistry": "0xCD2dcF53B001b3998FFF7a3A13CB74bbaB27723A",
+        "tokenRegistry": "0xdA8DBd2Aaffc995F11314c0040716E791de5aEd2",
         "identityProof": {
           "type": "DNS-TXT",
           "location": "tradetrust.io"
@@ -24,17 +24,17 @@
     "Crypto":{
       "cipher":"aes-128-ctr",
       "cipherparams":{ 
-        "iv":"abc..."
+        "iv":"815f141a79f7b5974cb7748d6d374e9e"
         },
-        "ciphertext":"b43...",
+        "ciphertext":"b430379e7c652e8ca2138cc1a04a6dd6b9a245b6ffe48dddc89a880b8ecc450f",
         "kdf":"scrypt",
         "kdfparams":{
-          "salt":"046b5e...",
+          "salt":"046b5efd97aae85365c55b9ef8b663dc931ec13e9471ca784f31fe911d733fea",
           "n":131072,
           "dklen":32,
           "p":1,
           "r":8},
-          "mac":"d564..."
+          "mac":"d5645e5efe60bc5c84f6433f5052d365d8303910c8c745a43f23e55deac49832"
           }
         },
   "formSchema": [{
@@ -42,21 +42,28 @@
   "name": "DEMO CNM",
   "schema": {
     "type": "object",
-    "required": ["id"],
+    "required": ["blNumber"],
     "properties": {
-      "id": {
+      "blNumber": {
         "type": "string",
-        "title": "ID",
+        "title": "BL Number",
         "ui": {
             "ui:autofocus": true,
-            "ui:placeholder": "enter id for the document"
+            "ui:placeholder": "enter BL number for the document"
           }
         },
-      "initialTokenOwnerAddress": {
+      "beneficiaryAddress": {
         "type": "string",
-        "title": "Token Owner Address",
+        "title": "Beneficiary Address",
         "ui": {
-          "ui:placeholder": "Ethereum Address to issue Token to"
+          "ui:placeholder": "Ethereum Address of the beneficiary"
+        }
+      },
+      "holderAddress": {
+        "type": "string",
+        "title": "Holder Address",
+        "ui": {
+          "ui:placeholder": "Ethereum Address of the holder"
         }
       },
       "name": {
