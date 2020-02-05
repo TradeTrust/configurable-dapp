@@ -1,23 +1,24 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, ReactNode } from "react";
 import { issueDocument } from "@govtechsg/tradetrust-schema";
-import { Document, SignedDocument } from "@govtechsg/decentralized-renderer-react-components";
+import { WrappedDocument } from "@govtechsg/open-attestation";
+import { Document } from "@govtechsg/decentralized-renderer-react-components";
 
 interface FormDataState {
   documentsList: Array<Document>;
   setDocumentsList: (documentsList: Document[]) => void;
-  wrappedDocument: SignedDocument<any>;
+  wrappedDocument: WrappedDocument<any> | null;
   setDocument: (document: Document) => void;
 }
 
 export const FormDataContext = React.createContext<FormDataState>({
   documentsList: [],
   setDocumentsList: (documentsList: Document[]) => documentsList,
-  wrappedDocument: {},
+  wrappedDocument: null,
   setDocument: (document: Document) => document
 });
 
 interface FormDataProps {
-  children: ReactElement;
+  children: ReactNode;
 }
 
 export class FormDataProvider extends React.Component<FormDataProps, FormDataState> {
@@ -25,7 +26,7 @@ export class FormDataProvider extends React.Component<FormDataProps, FormDataSta
     super(props);
     this.state = {
       documentsList: [],
-      wrappedDocument: {},
+      wrappedDocument: null,
       setDocumentsList: (documentsList: Document[]) => {
         this.setState(prevState => {
           return { ...prevState, documentsList };

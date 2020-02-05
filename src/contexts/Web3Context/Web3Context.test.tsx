@@ -2,6 +2,7 @@ import React from "react";
 import { render, fireEvent, waitForElement } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { Web3Provider, Web3Context } from ".";
+import { EncryptedJsonWallet } from "../../types";
 
 describe("test", () => {
   it("wallet is correctly imported", async () => {
@@ -27,7 +28,13 @@ describe("test", () => {
     const tree = (
       <Web3Provider>
         <Web3Context.Consumer>
-          {({ setWallet, wallet }) => (
+          {({
+            setWallet,
+            wallet
+          }: {
+            setWallet: (w: EncryptedJsonWallet, pwd: string) => void;
+            wallet: EncryptedJsonWallet;
+          }) => (
             <>
               <button
                 onClick={() => {

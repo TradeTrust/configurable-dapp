@@ -2,14 +2,14 @@ import React, { ReactElement } from "react";
 import { Web3Context, Web3ContextProps } from "../../contexts/Web3Context";
 
 class Web3EnabledWidget extends React.Component {
-  constructor(props) {
+  constructor(props: any) {
     super(props);
   }
 
   render(): ReactElement {
     return (
       <Web3Context.Consumer>
-        {web3Context => {
+        {(web3Context: any) => {
           return <Widget {...web3Context} />;
         }}
       </Web3Context.Consumer>
@@ -17,7 +17,7 @@ class Web3EnabledWidget extends React.Component {
   }
 }
 
-class Widget extends React.Component<Web3ContextProps> {
+class Widget extends React.Component<Web3ContextProps, any> {
   constructor(props: any) {
     super(props);
 

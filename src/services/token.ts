@@ -1,5 +1,6 @@
 import { TokenRegistry, WriteableTitleEscrowOwner, TitleEscrowOwner } from "@govtechsg/oa-token";
-import { SignedDocument } from "@govtechsg/decentralized-renderer-react-components";
+import { WrappedDocument } from "@govtechsg/open-attestation";
+import { Document } from "@govtechsg/decentralized-renderer-react-components";
 import { getData } from "@govtechsg/tradetrust-schema";
 import { getLogger } from "../logger";
 import { Wallet, ethers } from "ethers";
@@ -8,7 +9,7 @@ import { get } from "lodash";
 const { trace } = getLogger("saga:tokenService");
 
 interface InitializeTokenInterface {
-  document: SignedDocument<any>;
+  document: WrappedDocument<any>;
   web3Provider: ethers.providers.BaseProvider | undefined;
   wallet: Wallet | undefined;
 }
@@ -32,7 +33,7 @@ export const initializeTokenInstance = async ({
   trace(`token Instance: ${registryInstance}`);
 };
 
-export const mintToken = async (document: SignedDocument<any>, newOwner: string): Promise<void> => {
+export const mintToken = async (document: WrappedDocument<any>, newOwner: string): Promise<void> => {
   trace(`initial address to mint is: ${JSON.stringify(newOwner)}`);
   await registryInstance.mint(document, newOwner);
 };

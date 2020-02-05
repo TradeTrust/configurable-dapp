@@ -38,7 +38,7 @@ const FormDisplay = (): ReactElement => {
     try {
       toggleLoader(true);
       if (!wrappedDocument || !web3 || !wallet) throw new Error("Can not initialize the token instance");
-      const document: Document = documentsList[activeTab];
+      const document = documentsList[activeTab];
       await deployEscrowContract({ document, wallet, web3Provider: web3 });
       const ownerAddress = getTitleEscrowOwner();
       await initializeTokenInstance({ document: wrappedDocument, web3Provider: web3, wallet });
