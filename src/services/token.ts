@@ -1,6 +1,5 @@
 import { TokenRegistry, WriteableTitleEscrowOwner, TitleEscrowOwner } from "@govtechsg/oa-token";
 import { WrappedDocument } from "@govtechsg/open-attestation";
-import { Document } from "@govtechsg/decentralized-renderer-react-components";
 import { getData } from "@govtechsg/tradetrust-schema";
 import { getLogger } from "../logger";
 import { Wallet, ethers } from "ethers";
@@ -39,17 +38,18 @@ export const mintToken = async (document: WrappedDocument<any>, newOwner: string
 };
 
 export const deployEscrowContract = async ({
-  document,
+  registryAddress,
+  beneficiaryAddress,
+  holderAddress,
   web3Provider,
   wallet
 }: {
-  document: Document;
+  registryAddress: string;
+  beneficiaryAddress: string;
+  holderAddress: string;
   wallet: Wallet;
   web3Provider: ethers.providers.BaseProvider;
 }): Promise<void> => {
-  const beneficiaryAddress = get(document, "beneficiaryAddress", "");
-  const holderAddress = get(document, "holderAddress", "");
-  const registryAddress = get(document, "issuers[0].tokenRegistry", "");
   titleEscrowOwnerInstance = await WriteableTitleEscrowOwner.deployEscrowContract({
     registryAddress,
     beneficiaryAddress,
