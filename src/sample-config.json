@@ -42,8 +42,8 @@
   },
   "formSchema": [
     {
+      "$id": "123",
       "name": "Maersk Bill of Lading Data Entry Form",
-      "schema": {
         "type": "object",
         "properties": {
           "consignee": {
@@ -154,6 +154,5 @@
           }
         }
       }
-    }
   ]
 }

@@ -38,7 +38,7 @@
           }
         },
   "formSchema": [{
-  "id": "xyz",
+  "$id": "xyz",
   "name": "DEMO CNM",
     "type": "object",
     "required": ["blNumber", "beneficiaryAddress", "holderAddress"],
