@@ -1,3 +1,5 @@
+export const TOKEN_FIELDS = ["beneficiaryAddress", "holderAddress"];
+
 export const DATA_FILE_UPLOAD = {
   SUCCESS: "Document data uploaded successfully",
   ERROR: "Data file not uploaded"

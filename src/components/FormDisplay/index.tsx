@@ -11,10 +11,11 @@ import { UploadDataView } from "./UploadDataView";
 import { DisplayPreview } from "./DisplayPreview";
 import { PopupModal, FooterModal } from "../common";
 import { notifyError } from "../utils/toast";
-import { ISSUE_DOCUMENT } from "../Constant";
+import { ISSUE_DOCUMENT, TOKEN_FIELDS } from "../Constant";
 import { initializeTokenInstance, mintToken, getTitleEscrowOwner, deployEscrowContract } from "../../services/token";
 import Loader from "react-loader-spinner";
 import { Helpers } from "../../styles";
+import { WrappedDocument } from "@govtechsg/open-attestation";
 
 const TalignCenter = styled.div`
   ${Helpers.talignCenter}
@@ -30,22 +31,37 @@ const FormDisplay = (): ReactElement => {
   const [activeTab] = useState(0); //Add setActiveTab method to update it when handling multitab
   const [showConfirmationModal, toggleConfirmationModal] = useState(false);
   const [showLoader, toggleLoader] = useState(false);
+  const [isToken, setIfToken] = useState(false);
   const { config } = useContext(ConfigContext);
   const { web3, wallet } = useContext(Web3Context);
   const history = useHistory();
 
-  const publishDocument = async (): Promise<void> => {
+  const publishToken = async ({
+    document,
+    wrappedDocument
+  }: {
+    document: Document;
+    wrappedDocument: WrappedDocument;
+  }): Promise<void> => {
+    const registryAddress = get(document, "issuers[0].tokenRegistry", "");
+    const beneficiaryAddress = get(document, "beneficiaryAddress", "");
+    const holderAddress = get(document, "holderAddress", "");
+    await deployEscrowContract({ registryAddress, beneficiaryAddress, holderAddress, wallet, web3Provider: web3 });
+    const ownerAddress = getTitleEscrowOwner();
+    await initializeTokenInstance({ document: wrappedDocument, web3Provider: web3, wallet });
+    await mintToken(wrappedDocument, ownerAddress);
+  };
+
+  const publishDocument = (): void => {};
+
+  const publishToBlockchain = async (): Promise<void> => {
     try {
       toggleLoader(true);
-      if (!wrappedDocument || !web3 || !wallet) throw new Error("Can not initialize the token instance");
+      if (!wrappedDocument) throw new Error("can not find wrapped document");
+      if (!wallet) throw new Error("Can not find wallet");
+      if (!web3) throw new Error("Can not find web3 provider");
       const document = documentsList[activeTab];
-      const beneficiaryAddress = get(document, "beneficiaryAddress", "");
-      const holderAddress = get(document, "holderAddress", "");
-      const registryAddress = get(document, "issuers[0].tokenRegistry", "");
-      await deployEscrowContract({ registryAddress, beneficiaryAddress, holderAddress, wallet, web3Provider: web3 });
-      const ownerAddress = getTitleEscrowOwner();
-      await initializeTokenInstance({ document: wrappedDocument, web3Provider: web3, wallet });
-      await mintToken(wrappedDocument, ownerAddress);
+      await (isToken ? publishToken({ document, wrappedDocument }) : publishDocument());
       toggleConfirmationModal(false);
       toggleLoader(false);
       history.push("/published");
@@ -59,8 +75,14 @@ const FormDisplay = (): ReactElement => {
     try {
       documentsList.splice(activeTab, 1, document);
       setDocumentsList(documentsList);
-      const omittedDocument = omit(document, ["beneficiaryAddress", "holderAddress"]);
-      setDocument(omittedDocument);
+      const tokenRegistry = get(document, "issuers[0].tokenRegistry", "");
+      if (tokenRegistry) {
+        setIfToken(true);
+        const omittedDocument = omit(document, TOKEN_FIELDS);
+        setDocument(omittedDocument);
+      } else {
+        setDocument(document);
+      }
       toggleConfirmationModal(true);
     } catch (e) {
       notifyError(ISSUE_DOCUMENT.ERROR + ", " + e.message);
@@ -74,7 +96,9 @@ const FormDisplay = (): ReactElement => {
           title="Publish Document"
           showLoader={showLoader}
           toggleDisplay={toggleConfirmationModal}
-          footerComponent={<FooterModal toggleConfirmationModal={toggleConfirmationModal} onSubmit={publishDocument} />}
+          footerComponent={
+            <FooterModal toggleConfirmationModal={toggleConfirmationModal} onSubmit={publishToBlockchain} />
+          }
         >
           {showLoader ? (
             <TalignCenter>

@@ -17,13 +17,6 @@
     "country": "Singapore"
       }
     },
-    "recipient": {
-        "name": "SG FREIGHT",
-        "address": {
-          "street": "101 ORCHARD ROAD",
-          "country": "SINGAPORE"
-        }
-      },
 "vessel": "1",
 "voyageNo": 100,
 "portOfLoading": "Singapore Port",

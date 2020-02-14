@@ -40,9 +40,8 @@
   "formSchema": [{
   "id": "xyz",
   "name": "DEMO CNM",
-  "schema": {
     "type": "object",
-    "required": ["blNumber"],
+    "required": ["blNumber", "beneficiaryAddress", "holderAddress"],
     "properties": {
       "blNumber": {
         "type": "string",
@@ -139,22 +138,6 @@
                   }
                 },
               "required": ["type", "location"]
-              }
-            }
-          }
-        },
-        "recipient": {
-          "type": "object",
-          "title": "Recipient of the container",
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "address": {
-              "type": "object",
-              "properties": {
-              "street": {"type": "string"},
-              "country": {"type": "string"}
               }
             }
           }
@@ -258,5 +241,5 @@
         }
       }
     }
-  }]
+  ]
   }
