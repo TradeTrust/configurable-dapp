@@ -15,7 +15,7 @@ import { ISSUE_DOCUMENT, TOKEN_FIELDS } from "../Constant";
 import { initializeTokenInstance, mintToken, getTitleEscrowOwner, deployEscrowContract } from "../../services/token";
 import Loader from "react-loader-spinner";
 import { Helpers } from "../../styles";
-import { WrappedDocument } from "@govtechsg/open-attestation";
+import { getDocumentMetaData } from "../utils/config";
 
 const TalignCenter = styled.div`
   ${Helpers.talignCenter}
@@ -36,13 +36,11 @@ const FormDisplay = (): ReactElement => {
   const { web3, wallet } = useContext(Web3Context);
   const history = useHistory();
 
-  const publishToken = async ({
-    document,
-    wrappedDocument
-  }: {
-    document: Document;
-    wrappedDocument: WrappedDocument;
-  }): Promise<void> => {
+  const publishToken = async (): Promise<void> => {
+    if (!wrappedDocument) throw new Error("Cannot find wrapped document");
+    if (!wallet) throw new Error("Cannot find wallet");
+    if (!web3) throw new Error("Cannot find web3 provider");
+    const document = documentsList[activeTab];
     const registryAddress = get(document, "issuers[0].tokenRegistry", "");
     const beneficiaryAddress = get(document, "beneficiaryAddress", "");
     const holderAddress = get(document, "holderAddress", "");
@@ -57,11 +55,7 @@ const FormDisplay = (): ReactElement => {
   const publishToBlockchain = async (): Promise<void> => {
     try {
       toggleLoader(true);
-      if (!wrappedDocument) throw new Error("can not find wrapped document");
-      if (!wallet) throw new Error("Can not find wallet");
-      if (!web3) throw new Error("Can not find web3 provider");
-      const document = documentsList[activeTab];
-      await (isToken ? publishToken({ document, wrappedDocument }) : publishDocument());
+      await (isToken ? publishToken() : publishDocument());
       toggleConfirmationModal(false);
       toggleLoader(false);
       history.push("/published");
@@ -75,7 +69,8 @@ const FormDisplay = (): ReactElement => {
     try {
       documentsList.splice(activeTab, 1, document);
       setDocumentsList(documentsList);
-      const tokenRegistry = get(document, "issuers[0].tokenRegistry", "");
+      const documentMeta = getDocumentMetaData(config);
+      const tokenRegistry = get(documentMeta, "issuers[0].tokenRegistry", "");
       if (tokenRegistry) {
         setIfToken(true);
         const omittedDocument = omit(document, TOKEN_FIELDS);
