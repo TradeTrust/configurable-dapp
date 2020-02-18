@@ -16,6 +16,9 @@ import { initializeTokenInstance, mintToken, getTitleEscrowOwner, deployEscrowCo
 import Loader from "react-loader-spinner";
 import { Helpers } from "../../styles";
 import { getDocumentMetaData } from "../utils/config";
+import { getLogger } from "../../logger";
+
+const { trace, error } = getLogger("component:FormDisplay");
 
 const TalignCenter = styled.div`
   ${Helpers.talignCenter}
@@ -44,8 +47,10 @@ const FormDisplay = (): ReactElement => {
     const registryAddress = get(document, "issuers[0].tokenRegistry", "");
     const beneficiaryAddress = get(document, "beneficiaryAddress", "");
     const holderAddress = get(document, "holderAddress", "");
+    trace(`resgitry address: ${registryAddress}, beneficiary: ${beneficiaryAddress}, holder: ${holderAddress}`);
     await deployEscrowContract({ registryAddress, beneficiaryAddress, holderAddress, wallet, web3Provider: web3 });
     const ownerAddress = getTitleEscrowOwner();
+    trace(`deployed tilte escrow address: ${ownerAddress}`);
     await initializeTokenInstance({ document: wrappedDocument, web3Provider: web3, wallet });
     await mintToken(wrappedDocument, ownerAddress);
   };
@@ -55,12 +60,14 @@ const FormDisplay = (): ReactElement => {
   const publishToBlockchain = async (): Promise<void> => {
     try {
       toggleLoader(true);
+      trace(`publish to blockhain isToken: ${isToken}`);
       await (isToken ? publishToken() : publishDocument());
       toggleConfirmationModal(false);
       toggleLoader(false);
       history.push("/published");
     } catch (e) {
       toggleLoader(false);
+      error(`error in publish to blockchain ${JSON.stringify(e)}`);
       notifyError(ISSUE_DOCUMENT.ERROR + ", " + e.message);
     }
   };
