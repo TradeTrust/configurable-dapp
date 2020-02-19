@@ -4,7 +4,7 @@ import { ConfigContext } from "../../contexts/ConfigurationContext";
 import { FormDataContext } from "../../contexts/FormDataContext";
 import { Web3Context } from "../../contexts/Web3Context";
 import { getDocumentMetaData, getWalletMeta } from "../utils/config";
-import { ConfigDropzone } from "./ConfigDropzoneView";
+import { ConfigDropzoneView } from "./ConfigDropzoneView";
 
 const ConfigDropzoneContainer = (): ReactElement => {
   const { config, setConfig } = useContext(ConfigContext);
@@ -38,7 +38,7 @@ const ConfigDropzoneContainer = (): ReactElement => {
   };
 
   return (
-    <ConfigDropzone
+    <ConfigDropzoneView
       config={config}
       onConfigUpdate={processConfigUpdate}
       setWalletData={setWalletData}

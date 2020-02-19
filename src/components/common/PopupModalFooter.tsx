@@ -5,7 +5,7 @@ interface FooterModalProps {
   onSubmit: (val?: boolean) => void;
 }
 
-export const FooterModal = ({ toggleConfirmationModal, onSubmit }: FooterModalProps): ReactElement => (
+export const PopupModalFooter = ({ toggleConfirmationModal, onSubmit }: FooterModalProps): ReactElement => (
   <>
     <button type="button" className="btn btn-default" onClick={() => toggleConfirmationModal(false)}>
       Close

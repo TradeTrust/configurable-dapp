@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from "react";
 import Loader from "react-loader-spinner";
-import { PopupModal, FooterModal, SvgIcon } from "../common";
+import { PopupModal, PopupModalFooter, SvgIcon } from "../common";
 import { DropzoneView } from "./DropzoneView";
 import { getLogger } from "../../logger";
 import { readFileData } from "../utils/file";
@@ -55,7 +55,7 @@ const TalignCenter = styled.div`
   ${Helpers.talignCenter}
 `;
 
-export const ConfigDropzone = (props: any): ReactElement => {
+export const ConfigDropzoneView = (props: any): ReactElement => {
   const [password, setPassword] = useState("");
   const [isShowPassword, setShowPassword] = useState(false);
 
@@ -93,7 +93,7 @@ export const ConfigDropzone = (props: any): ReactElement => {
             props.showLoader ? (
               <></>
             ) : (
-              <FooterModal toggleConfirmationModal={props.togglePasswordModal} onSubmit={setWallet} />
+              <PopupModalFooter toggleConfirmationModal={props.togglePasswordModal} onSubmit={setWallet} />
             )
           }
         >

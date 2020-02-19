@@ -9,7 +9,7 @@ import { ConfigContext } from "../../contexts/ConfigurationContext";
 import { Web3Context } from "../../contexts/Web3Context";
 import { UploadDataView } from "./UploadDataView";
 import { DisplayPreview } from "./DisplayPreview";
-import { PopupModal, FooterModal } from "../common";
+import { PopupModal, PopupModalFooter } from "../common";
 import { notifyError } from "../utils/toast";
 import { ISSUE_DOCUMENT } from "../Constant";
 import { initializeTokenInstance, mintToken } from "../../services/token";
@@ -72,7 +72,9 @@ const FormDisplay = (): ReactElement => {
           title="Publish Document"
           showLoader={showLoader}
           toggleDisplay={toggleConfirmationModal}
-          footerComponent={<FooterModal toggleConfirmationModal={toggleConfirmationModal} onSubmit={publishDocument} />}
+          footerComponent={
+            <PopupModalFooter toggleConfirmationModal={toggleConfirmationModal} onSubmit={publishDocument} />
+          }
         >
           {showLoader ? (
             <TalignCenter>
