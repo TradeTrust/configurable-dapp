@@ -6,14 +6,17 @@ const Config = "./fixture/config.json";
 const DropzoneContainer = Selector("#dropzone-container");
 const FormHeader = Selector("#form-header");
 const FormBody = Selector("#form-body");
+const PreviewModal = Selector("#preview-modal");
+const inputPassword = Selector("#password");
+const buttonSubmit = Selector("#modal-button-submit");
 
 const validateTextContent = async (t: TestController, component: Selector, texts: string[]): Promise<any> =>
   texts.reduce(async (_prev, curr) => t.expect(component.textContent).contains(curr), Promise.resolve());
 
-/* 
+/*
   1. jest/expect-expect - already extracted out in common method on top to match the expect.
   2. jest/require-top-level-describe - We already have description in fixture and then test description.
-  3. jest/no-test-callback - this rule adding extra Promise which stops the execution of the tests. 
+  3. jest/no-test-callback - this rule adding extra Promise which stops the execution of the tests.
 */
 /* eslint-disable jest/expect-expect, jest/require-top-level-describe, jest/no-test-callback */
 test("config schema is rendered correctly to display form", async (t: TestController) => {
@@ -22,6 +25,9 @@ test("config schema is rendered correctly to display form", async (t: TestContro
   await validateTextContent(t, DropzoneContainer, ["Drag 'n' drop TradeTrust configuration file here"]);
 
   await t.setFilesToUpload("input[type=file]", [Config]);
+  await validateTextContent(t, PreviewModal, ["Enter Password"]);
+  await t.typeText(inputPassword, "password").expect(inputPassword.value).eql("password");
+  await t.click(buttonSubmit).setPageLoadTimeout(10000);
 
   await FormHeader.with({ visibilityCheck: true })();
 
