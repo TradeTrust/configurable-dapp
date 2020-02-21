@@ -4,7 +4,7 @@ fixture("Document Preview View").page`http://localhost:3010`; // eslint-disable-
 
 const Config = "./fixture/config.json";
 const Data = "./fixture/formData.json";
-const FormHeader = Selector("#form-header");
+const FormHeader = Selector("#form-header", { timeout: 70000 });
 const ShowPreview = Selector("#document-preview");
 const PreviewModal = Selector("#preview-modal");
 const IframeBlock = Selector("#iframe");

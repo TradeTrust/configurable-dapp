@@ -4,7 +4,7 @@ fixture("Config JsonSchema Rendering").page`http://localhost:3010`; // eslint-di
 
 const Config = "./fixture/config.json";
 const DropzoneContainer = Selector("#dropzone-container");
-const FormHeader = Selector("#form-header");
+const FormHeader = Selector("#form-header", { timeout: 70000 });
 const FormBody = Selector("#form-body");
 const PreviewModal = Selector("#preview-modal");
 const inputPassword = Selector("#password");
