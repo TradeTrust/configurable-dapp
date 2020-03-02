@@ -1,64 +1,78 @@
-import { TokenRegistry, WriteableTitleEscrowOwner, TitleEscrowOwner } from "@govtechsg/oa-token";
-import { WrappedDocument } from "@govtechsg/open-attestation";
-import { getData } from "@govtechsg/tradetrust-schema";
+/**
+ *  TODO: Extract this code out to its own package to reuse in tradetrust-website
+ */
+
+import { WriteableToken } from "@govtechsg/oa-token";
+
 import { getLogger } from "../logger";
-import { Wallet, ethers } from "ethers";
-import { get } from "lodash";
 
-const { trace } = getLogger("saga:tokenService");
+import { useState, useContext, useEffect } from "react";
+import { Web3Context } from "../contexts/Web3Context";
 
-interface InitializeTokenInterface {
-  document: WrappedDocument<any>;
-  web3Provider: ethers.providers.BaseProvider | undefined;
-  wallet: Wallet | undefined;
+const { trace, error } = getLogger("useToken");
+
+interface TransactionState {
+  status: TransactionStateStatus;
+  error: any;
 }
 
-let registryInstance: TokenRegistry;
-let titleEscrowOwnerInstance: TitleEscrowOwner;
+export enum TransactionStateStatus {
+  LOADING = "loading",
+  READY = "ready",
+  NO_WALLET = "no_wallet",
+  TRANSACTION_MINING = "transaction-mining",
+  ERROR = "error"
+}
 
-export const initializeTokenInstance = async ({
-  document,
-  web3Provider = undefined,
-  wallet = undefined
-}: InitializeTokenInterface): Promise<void> => {
-  trace(`web3 provider is: ${web3Provider} and wallet is: ${wallet}`);
+export const useEthereumTransactionState = () => {
+  const [state, setState] = useState<TransactionState>({ status: TransactionStateStatus.LOADING, error: undefined });
+
+  const setLoading = () => setState({ status: TransactionStateStatus.LOADING, error: undefined });
+  const setNoWallet = () => setState({ status: TransactionStateStatus.NO_WALLET, error: undefined });
+  const setReady = () => setState({ status: TransactionStateStatus.READY, error: undefined });
+  const setMining = () => setState({ status: TransactionStateStatus.TRANSACTION_MINING, error: undefined });
+
+  const setError = (e: any) => setState({ status: TransactionStateStatus.ERROR, error: e });
+
+  return { state, setLoading, setNoWallet, setReady, setMining, setError };
+};
+
+type UseToken = [TransactionState, WriteableToken | null, MintToken];
+type MintToken = (beneficiary: string, holder: string) => Promise<any>;
+
+export const useToken = ({ document }): UseToken => {
   trace(`document to initialize ${JSON.stringify(document)}`);
-  if (!document || !web3Provider || !wallet) throw new Error("Can not initialize the token instance");
-  const documentData = getData(document);
-  const contractAddress = get(documentData, "issuers[0].tokenRegistry", "");
-  trace(`contract address is : ${contractAddress}`);
-  if (!contractAddress) throw new Error("Please submit valid token");
-  registryInstance = await new TokenRegistry({ contractAddress, web3Provider, wallet });
-  trace(`token Instance: ${registryInstance}`);
-};
 
-export const mintToken = async (document: WrappedDocument<any>, newOwner: string): Promise<void> => {
-  trace(`initial address to mint is: ${JSON.stringify(newOwner)}`);
-  await registryInstance.mint(document, newOwner);
-};
+  const [tokenInstance, setTokenInstance] = useState<WriteableToken | null>(null);
+  const { state, setReady, setMining, setError } = useEthereumTransactionState();
 
-export const deployEscrowContract = async ({
-  registryAddress,
-  beneficiaryAddress,
-  holderAddress,
-  web3Provider,
-  wallet
-}: {
-  registryAddress: string;
-  beneficiaryAddress: string;
-  holderAddress: string;
-  wallet: Wallet;
-  web3Provider: ethers.providers.BaseProvider;
-}): Promise<void> => {
-  titleEscrowOwnerInstance = await WriteableTitleEscrowOwner.deployEscrowContract({
-    registryAddress,
-    beneficiaryAddress,
-    holderAddress,
-    wallet,
-    web3Provider
-  });
-};
+  const { web3, wallet } = useContext(Web3Context);
 
-export const getTitleEscrowOwner = (): string => {
-  return titleEscrowOwnerInstance.address;
+  const mintToken: MintToken = async (beneficiary: string, holder: string) => {
+    trace(`Minting to b: ${beneficiary}, h: ${holder}`);
+    try {
+      if (!tokenInstance) {
+        throw new Error(`Token is not initialised`);
+      }
+      setMining();
+      const txHash = await tokenInstance.mintToEscrow(beneficiary, holder);
+      setReady();
+      return txHash;
+    } catch (e) {
+      error(`Error minting token: ${e}`);
+      setError(e);
+    }
+  };
+
+  useEffect(() => {
+    try {
+      setTokenInstance(new WriteableToken({ document, web3Provider: web3, wallet }));
+      setReady()
+    } catch (e) {
+      error(`Error initialising token: ${e}`);
+      setError(e);
+    }
+  }, [document, web3, wallet]);
+
+  return [state, tokenInstance, mintToken];
 };
