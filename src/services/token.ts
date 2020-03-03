@@ -16,6 +16,15 @@ interface TransactionState {
   error: any;
 }
 
+interface UseEthereumTransactionState {
+  state: TransactionState;
+  setLoading: () => void;
+  setNoWallet: () => void;
+  setReady: () => void;
+  setMining: () => void;
+  setError: (e: any) => void;
+}
+
 export enum TransactionStateStatus {
   LOADING = "loading",
   READY = "ready",
@@ -24,15 +33,15 @@ export enum TransactionStateStatus {
   ERROR = "error"
 }
 
-export const useEthereumTransactionState = () => {
+export const useEthereumTransactionState = (): UseEthereumTransactionState => {
   const [state, setState] = useState<TransactionState>({ status: TransactionStateStatus.LOADING, error: undefined });
 
-  const setLoading = () => setState({ status: TransactionStateStatus.LOADING, error: undefined });
-  const setNoWallet = () => setState({ status: TransactionStateStatus.NO_WALLET, error: undefined });
-  const setReady = () => setState({ status: TransactionStateStatus.READY, error: undefined });
-  const setMining = () => setState({ status: TransactionStateStatus.TRANSACTION_MINING, error: undefined });
+  const setLoading = (): void => setState({ status: TransactionStateStatus.LOADING, error: undefined });
+  const setNoWallet = (): void => setState({ status: TransactionStateStatus.NO_WALLET, error: undefined });
+  const setReady = (): void => setState({ status: TransactionStateStatus.READY, error: undefined });
+  const setMining = (): void => setState({ status: TransactionStateStatus.TRANSACTION_MINING, error: undefined });
 
-  const setError = (e: any) => setState({ status: TransactionStateStatus.ERROR, error: e });
+  const setError = (e: any): void => setState({ status: TransactionStateStatus.ERROR, error: e });
 
   return { state, setLoading, setNoWallet, setReady, setMining, setError };
 };
@@ -48,7 +57,7 @@ export const useToken = ({ document }): UseToken => {
 
   const { web3, wallet } = useContext(Web3Context);
 
-  const mintToken: MintToken = async (beneficiary: string, holder: string) => {
+  const mintToken: MintToken = async (beneficiary: string, holder: string): Promise<string | void> => {
     trace(`Minting to b: ${beneficiary}, h: ${holder}`);
     try {
       if (!tokenInstance) {
@@ -67,12 +76,12 @@ export const useToken = ({ document }): UseToken => {
   useEffect(() => {
     try {
       setTokenInstance(new WriteableToken({ document, web3Provider: web3, wallet }));
-      setReady()
+      setReady();
     } catch (e) {
       error(`Error initialising token: ${e}`);
       setError(e);
     }
-  }, [document, web3, wallet]);
+  }, [document, web3, wallet, setReady, setError]);
 
   return [state, tokenInstance, mintToken];
 };
