@@ -1,4 +1,5 @@
 import React, { ReactElement, useState, useEffect } from "react";
+import { CustomLoader } from "./Loader";
 
 interface PopupModalProps {
   children: ReactElement;
@@ -65,7 +66,7 @@ export const PopupModal = ({
                   </button>
                 )}
               </div>
-              <div className="modal-body">{children}</div>
+              <div className="modal-body">{showLoader ? <CustomLoader type="TailSpin" /> : children}</div>
               <div className="modal-footer">
                 {!showLoader &&
                   (footerComponent ? (

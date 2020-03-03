@@ -81,7 +81,7 @@ export const useToken = ({ document }): UseToken => {
       error(`Error initialising token: ${e}`);
       setError(e);
     }
-  }, [document, web3, wallet, setReady, setError]);
+  }, [document, web3, wallet]);
 
   return [state, tokenInstance, mintToken];
 };

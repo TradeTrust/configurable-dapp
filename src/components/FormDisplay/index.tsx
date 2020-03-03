@@ -12,8 +12,6 @@ import { PopupModal, FooterModal } from "../common";
 import { notifyError } from "../utils/toast";
 import { ISSUE_DOCUMENT, TOKEN_FIELDS } from "../Constant";
 import { useToken, TransactionStateStatus } from "../../services/token";
-import Loader from "react-loader-spinner";
-import { Helpers } from "../../styles";
 import { getDocumentMetaData } from "../utils/config";
 import { getLogger } from "../../logger";
 
@@ -25,10 +23,6 @@ interface PublishToBlockchainModalInterface {
   beneficiaryAddress: string;
   holderAddress: string;
 }
-
-const TalignCenter = styled.div`
-  ${Helpers.talignCenter}
-`;
 
 const HeaderDiv = styled.div`
   background-color: dimgray;
@@ -99,7 +93,7 @@ const PublishToBlockchainModal = ({
   const isLoading =
     state.status === TransactionStateStatus.LOADING || state.status === TransactionStateStatus.TRANSACTION_MINING;
 
-  const handleSubmit = async (): void => {
+  const handleSubmit = async (): Promise<void> => {
     await mintToken(beneficiaryAddress, holderAddress);
     history.push("/published");
   };
@@ -117,15 +111,7 @@ const PublishToBlockchainModal = ({
       toggleDisplay={toggleConfirmationModal}
       footerComponent={<FooterModal toggleConfirmationModal={toggleConfirmationModal} onSubmit={handleSubmit} />}
     >
-      {isLoading ? (
-        <TalignCenter>
-          <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />
-        </TalignCenter>
-      ) : (
-        <>
-          <div>Are you sure you want to publish document ?</div>
-        </>
-      )}
+      <>Are you sure you want to publish document ?</>
     </PopupModal>
   );
 };
