@@ -95,8 +95,13 @@ const PublishToBlockchainModal = ({
 
   const handleSubmit = async (): Promise<void> => {
     await mintToken(beneficiaryAddress, holderAddress);
-    history.push("/published");
   };
+
+  useEffect(() => {
+    if (!state.error && state.status === TransactionStateStatus.SUCCESS) {
+      history.push("/published");
+    }
+  }, [state.status, state.error, history]);
 
   useEffect(() => {
     if (state.error) {

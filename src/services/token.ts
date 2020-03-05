@@ -21,6 +21,7 @@ interface UseEthereumTransactionState {
   setLoading: () => void;
   setNoWallet: () => void;
   setReady: () => void;
+  setSuccess: () => void;
   setMining: () => void;
   setError: (e: any) => void;
 }
@@ -28,6 +29,7 @@ interface UseEthereumTransactionState {
 export enum TransactionStateStatus {
   LOADING = "loading",
   READY = "ready",
+  SUCCESS = "success",
   NO_WALLET = "no_wallet",
   TRANSACTION_MINING = "transaction-mining",
   ERROR = "error"
@@ -39,11 +41,12 @@ export const useEthereumTransactionState = (): UseEthereumTransactionState => {
   const setLoading = (): void => setState({ status: TransactionStateStatus.LOADING, error: undefined });
   const setNoWallet = (): void => setState({ status: TransactionStateStatus.NO_WALLET, error: undefined });
   const setReady = (): void => setState({ status: TransactionStateStatus.READY, error: undefined });
+  const setSuccess = (): void => setState({ status: TransactionStateStatus.SUCCESS, error: undefined });
   const setMining = (): void => setState({ status: TransactionStateStatus.TRANSACTION_MINING, error: undefined });
 
-  const setError = (e: any): void => setState({ status: TransactionStateStatus.ERROR, error: e });
+  const setError = (e: any): void => setState({ status: TransactionStateStatus.ERROR, error: e.message });
 
-  return { state, setLoading, setNoWallet, setReady, setMining, setError };
+  return { state, setLoading, setNoWallet, setReady, setSuccess, setMining, setError };
 };
 
 type UseToken = [TransactionState, WriteableToken | null, MintToken];
@@ -53,8 +56,7 @@ export const useToken = ({ document }): UseToken => {
   trace(`document to initialize ${JSON.stringify(document)}`);
 
   const [tokenInstance, setTokenInstance] = useState<WriteableToken | null>(null);
-  const { state, setReady, setMining, setError } = useEthereumTransactionState();
-
+  const { state, setReady, setMining, setError, setSuccess } = useEthereumTransactionState();
   const { web3, wallet } = useContext(Web3Context);
 
   const mintToken: MintToken = async (beneficiary: string, holder: string): Promise<string | void> => {
@@ -65,7 +67,7 @@ export const useToken = ({ document }): UseToken => {
       }
       setMining();
       const txHash = await tokenInstance.mintToEscrow(beneficiary, holder);
-      setReady();
+      setSuccess();
       return txHash;
     } catch (e) {
       error(`Error minting token: ${e}`);
