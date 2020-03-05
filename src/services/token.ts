@@ -6,8 +6,9 @@ import { WriteableToken } from "@govtechsg/oa-token";
 
 import { getLogger } from "../logger";
 
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useCallback } from "react";
 import { Web3Context } from "../contexts/Web3Context";
+import { WrappedDocument } from "@govtechsg/open-attestation";
 
 const { trace, error } = getLogger("useToken");
 
@@ -52,12 +53,15 @@ export const useEthereumTransactionState = (): UseEthereumTransactionState => {
 type UseToken = [TransactionState, WriteableToken | null, MintToken];
 type MintToken = (beneficiary: string, holder: string) => Promise<any>;
 
-export const useToken = ({ document }): UseToken => {
+export const useToken = ({ document }: { document: WrappedDocument<any> }): UseToken => {
   trace(`document to initialize ${JSON.stringify(document)}`);
 
   const [tokenInstance, setTokenInstance] = useState<WriteableToken | null>(null);
   const { state, setReady, setMining, setError, setSuccess } = useEthereumTransactionState();
   const { web3, wallet } = useContext(Web3Context);
+
+  const setErrorCallback = useCallback(setError, []);
+  const setReadyCallback = useCallback(setReady, []);
 
   const mintToken: MintToken = async (beneficiary: string, holder: string): Promise<string | void> => {
     trace(`Minting to b: ${beneficiary}, h: ${holder}`);
@@ -78,12 +82,12 @@ export const useToken = ({ document }): UseToken => {
   useEffect(() => {
     try {
       setTokenInstance(new WriteableToken({ document, web3Provider: web3, wallet }));
-      setReady();
+      setReadyCallback();
     } catch (e) {
       error(`Error initialising token: ${e}`);
-      setError(e);
+      setErrorCallback(e);
     }
-  }, [document, web3, wallet]);
-
+  }, [document, web3, wallet, setReadyCallback, setErrorCallback]);
+  
   return [state, tokenInstance, mintToken];
 };
