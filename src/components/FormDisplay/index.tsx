@@ -98,16 +98,13 @@ const PublishToBlockchainModal = ({
   };
 
   useEffect(() => {
-    if (!state.error && state.status === TransactionStateStatus.SUCCESS) {
-      history.push("/published");
-    }
-  }, [state.status, state.error, history]);
-
-  useEffect(() => {
     if (state.error) {
       notifyError(state.error);
     }
-  }, [state.error]);
+    if (!state.error && state.status === TransactionStateStatus.SUCCESS) {
+      history.push("/published");
+    }
+  }, [history, state.error, state.status]);
 
   return (
     <PopupModal
