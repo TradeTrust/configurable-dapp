@@ -88,6 +88,6 @@ export const useToken = ({ document }: { document: WrappedDocument<any> }): UseT
       setErrorCallback(e);
     }
   }, [document, web3, wallet, setReadyCallback, setErrorCallback]);
-  
+
   return [state, tokenInstance, mintToken];
 };
