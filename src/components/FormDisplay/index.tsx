@@ -14,14 +14,20 @@ import { ISSUE_DOCUMENT, TOKEN_FIELDS } from "../Constant";
 import { useToken, TransactionStateStatus } from "../../services/token";
 import { getDocumentMetaData } from "../utils/config";
 import { getLogger } from "../../logger";
+import { WrappedDocument } from "@govtechsg/open-attestation";
 
 const { trace, error } = getLogger("component:FormDisplay");
 
 interface PublishToBlockchainModalInterface {
-  document: Document;
+  document: WrappedDocument<any>;
   toggleConfirmationModal: (val: boolean) => void;
   beneficiaryAddress: string;
   holderAddress: string;
+}
+
+interface FormData extends Document {
+  beneficiaryAddress?: string;
+  holderAddress?: string;
 }
 
 const HeaderDiv = styled.div`
@@ -35,10 +41,10 @@ const FormDisplay = (): ReactElement => {
   const [showConfirmationModal, toggleConfirmationModal] = useState(false);
   const { config } = useContext(ConfigContext);
 
-  const [beneficiaryAddress, setBeneficiaryAddress] = useState("");
+  const [beneficiaryAddress, setBeneficiaryAddress] = useState<string>("");
   const [holderAddress, setHolderAddress] = useState("");
 
-  const handleSubmit = (document: Document): void => {
+  const handleSubmit = (document: FormData): void => {
     try {
       documentsList.splice(activeTab, 1, document);
       setDocumentsList(documentsList);
@@ -47,8 +53,8 @@ const FormDisplay = (): ReactElement => {
       const tokenRegistry = get(documentMeta, "issuers[0].tokenRegistry", "");
       if (tokenRegistry) {
         const omittedDocument = omit(document, TOKEN_FIELDS);
-        setBeneficiaryAddress(document.beneficiaryAddress);
-        setHolderAddress(document.holderAddress);
+        setBeneficiaryAddress(document?.beneficiaryAddress ?? "");
+        setHolderAddress(document?.holderAddress ?? "");
         setDocument(omittedDocument);
       } else {
         setDocument(document);
@@ -62,7 +68,7 @@ const FormDisplay = (): ReactElement => {
 
   return (
     <>
-      {showConfirmationModal && (
+      {showConfirmationModal && wrappedDocument && (
         <PublishToBlockchainModal
           beneficiaryAddress={beneficiaryAddress}
           holderAddress={holderAddress}
