@@ -57,8 +57,7 @@ describe("test", () => {
       const walletText = getByText(/Received:/).textContent?.length ?? 0;
       return walletText > "Received: ".length;
     });
-    expect(getByText(/Received:/).textContent).toBe(
-      'Received: {"signingKey":{"privateKey":"0x79946d40213a3265070bfa0af36e164bde2118b43589c9ccb1ad076e3cdd7724","keyPair":{"privateKey":"0x79946d40213a3265070bfa0af36e164bde2118b43589c9ccb1ad076e3cdd7724","publicKey":"0x04f0e6830d1f42f5ea5fe4c2bcc1ff3e2e864e1469f0fd28c21ba0802e46306d300b9745c2f419bc7483538a2ce8c166f753dadd566958b845c13f7792cc91ed5c","compressedPublicKey":"0x02f0e6830d1f42f5ea5fe4c2bcc1ff3e2e864e1469f0fd28c21ba0802e46306d30","publicKeyBytes":[2,240,230,131,13,31,66,245,234,95,228,194,188,193,255,62,46,134,78,20,105,240,253,40,194,27,160,128,46,70,48,109,48]},"publicKey":"0x04f0e6830d1f42f5ea5fe4c2bcc1ff3e2e864e1469f0fd28c21ba0802e46306d300b9745c2f419bc7483538a2ce8c166f753dadd566958b845c13f7792cc91ed5c","address":"0x1Fc5C8f02C375eDFe17EC005A047b9e945A6e446"}}'
-    );
+    expect(getByText(/Received:/).textContent).toContain("privateKey");
+    expect(getByText(/Received:/).textContent).toContain("publicKey");
   });
 });
