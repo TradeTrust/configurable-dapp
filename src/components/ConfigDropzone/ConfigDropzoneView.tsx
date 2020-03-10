@@ -109,6 +109,7 @@ export const ConfigDropzone = (props: any): ReactElement => {
                     id="password"
                     type={isShowPassword ? "text" : "password"}
                     placeholder="Password"
+                    autoFocus
                     onChange={e => setPassword(e.target.value)}
                   />
                   {isShowPassword ? (

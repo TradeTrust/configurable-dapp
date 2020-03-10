@@ -5,140 +5,176 @@
       "name": "BILL_OF_LADING",
       "type": "EMBEDDED_RENDERER",
       "url": "https://demo-cnm.openattestation.com"
-      },
+    },
     "issuers": [
-        {
+      {
         "name": "DEMO STORE",
-        "tokenRegistry": "0xCD2dcF53B001b3998FFF7a3A13CB74bbaB27723A",
+        "tokenRegistry": "0xdA8DBd2Aaffc995F11314c0040716E791de5aEd2",
         "identityProof": {
           "type": "DNS-TXT",
           "location": "tradetrust.io"
-          }
         }
-      ]
-    },
+      }
+    ]
+  },
   "wallet": {
-    "address":"67b5bc373caa527cee654d6a0f629ba1e84fad02",
-    "id":"c829be9f-2e80-4425-a3b1-0170d5cb6a6a",
-    "version":3,
-    "Crypto":{
-      "cipher":"aes-128-ctr",
-      "cipherparams":{ 
-        "iv":"abc..."
-        },
-        "ciphertext":"b43...",
-        "kdf":"scrypt",
-        "kdfparams":{
-          "salt":"046b5e...",
-          "n":131072,
-          "dklen":32,
-          "p":1,
-          "r":8},
-          "mac":"d564..."
-          }
-        },
-  "formSchema": [{
-  "id": "xyz",
-  "name": "DEMO CNM",
-  "schema": {
-    "type": "object",
-    "required": ["id"],
-    "properties": {
-      "id": {
-        "type": "string",
-        "title": "ID",
-        "ui": {
-            "ui:autofocus": true,
-            "ui:placeholder": "enter id for the document"
-          }
-        },
-      "initialTokenOwnerAddress": {
-        "type": "string",
-        "title": "Token Owner Address",
-        "ui": {
-          "ui:placeholder": "Ethereum Address to issue Token to"
-        }
+    "address": "67b5bc373caa527cee654d6a0f629ba1e84fad02",
+    "id": "825502fd-bf53-4905-8271-6ca3282b57ba",
+    "version": 3,
+    "Crypto": {
+      "cipher": "aes-128-ctr",
+      "cipherparams": { "iv": "788b792e1bfacd491e0f196e296c43d6" },
+      "ciphertext": "af2dd51afb80bf91eeb2390e87cb8277a786dcb26eb8a03114ddd9d4e8c85f4c",
+      "kdf": "scrypt",
+      "kdfparams": {
+        "salt": "8323faf6a188a8dc37599cdd84148336551eb76d2c962973fd318f33fdc7b760",
+        "n": 1,
+        "dklen": 32,
+        "p": 1,
+        "r": 8
       },
-      "name": {
-        "type": "string",
-        "title": "Name",
-        "ui": {
+      "mac": "19aef74cad9195e9a417b7b41e22b4793ac78318a8d4b6c3194bddc427f26654"
+    }
+  },
+  "formSchema": [
+    {
+      "$id": "xyz",
+      "name": "DEMO CNM",
+      "type": "object",
+      "required": ["blNumber", "beneficiaryAddress", "holderAddress"],
+      "properties": {
+        "blNumber": {
+          "type": "string",
+          "title": "BL Number",
+          "ui": {
+            "ui:autofocus": true,
+            "ui:placeholder": "enter BL number for the document"
+          }
+        },
+        "beneficiaryAddress": {
+          "type": "string",
+          "title": "Beneficiary Address",
+          "ui": {
+            "ui:placeholder": "Ethereum Address of the beneficiary"
+          }
+        },
+        "holderAddress": {
+          "type": "string",
+          "title": "Holder Address",
+          "ui": {
+            "ui:placeholder": "Ethereum Address of the holder"
+          }
+        },
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "ui": {
             "ui:placeholder": "enter name of the document"
           }
         },
-      "$template": {
-        "type": "object",
-        "title": "Template Renderer",
-        "ui": {
-          "classNames": "item-pd-0"
+        "$template": {
+          "type": "object",
+          "title": "Template Renderer",
+          "ui": {
+            "classNames": "item-pd-0"
           },
-        "properties": {
-          "name": {
-            "type": "string",
-            "ui": {
+          "properties": {
+            "name": {
+              "type": "string",
+              "ui": {
                 "ui:placeholder": "Template name to be use by template renderer to determine the template to use"
               }
             },
-          "type": {
-            "type": "string",
-            "default": "EMBEDDED_RENDERER",
-            "enum": ["EMBEDDED_RENDERER"]
+            "type": {
+              "type": "string",
+              "default": "EMBEDDED_RENDERER",
+              "enum": ["EMBEDDED_RENDERER"]
             },
-          "url": {
-            "type": "string",
-            "ui": {
+            "url": {
+              "type": "string",
+              "ui": {
                 "ui:placeholder": "URL of a decentralised renderer to render this document"
               }
             }
           },
-        "required": ["name", "type"]
+          "required": ["name", "type"]
         },
-      "issuers": {
-        "type": "array",
-        "title": "Issuers of the document",
-        "minItems": 1,
-        "ui": {
+        "issuers": {
+          "type": "array",
+          "title": "Issuers of the document",
+          "minItems": 1,
+          "ui": {
             "ui:options": {
-            "orderable": false
+              "orderable": false
             },
-          "classNames": "item-pd-0"
+            "classNames": "item-pd-0"
           },
-        "items": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
               },
-            "tokenRegistry": {
-              "type": "string",
-              "pattern": "^0x[a-fA-F0-9]{40}$",
-              "ui": {
+              "tokenRegistry": {
+                "type": "string",
+                "pattern": "^0x[a-fA-F0-9]{40}$",
+                "ui": {
                   "ui:placeholder": "Smart contract address of document store"
                 }
               },
-            "identityProof": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "default": "DNS-TXT",
-                  "enum": ["DNS-TXT"]
+              "identityProof": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "default": "DNS-TXT",
+                    "enum": ["DNS-TXT"]
                   },
-                "location": {
-                  "type": "string",
-                  "ui": {
+                  "location": {
+                    "type": "string",
+                    "ui": {
                       "ui:placeholder": "Url of the website referencing to document store"
                     }
                   }
                 },
-              "required": ["type", "location"]
+                "required": ["type", "location"]
               }
             }
           }
         },
-        "recipient": {
+        "consignee": {
           "type": "object",
-          "title": "Recipient of the container",
+          "title": "Consignee",
+          "ui": {
+            "classNames": "item-pd-0"
+          },
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            }
+          }
+        },
+        "notifyParty": {
+          "type": "object",
+          "title": "Notify Party",
+          "ui": {
+            "classNames": "item-pd-0"
+          },
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          }
+        },
+        "shipper": {
+          "type": "object",
+          "title": "Shipper",
+          "ui": {
+            "classNames": "item-pd-0"
+          },
           "properties": {
             "name": {
               "type": "string"
@@ -146,110 +182,64 @@
             "address": {
               "type": "object",
               "properties": {
-              "street": {"type": "string"},
-              "country": {"type": "string"}
+                "street": { "type": "string" },
+                "country": { "type": "string" }
               }
             }
           }
         },
-      "consignee": {
-        "type": "object",
-        "title": "Consignee",
-        "ui": {
-          "classNames": "item-pd-0"
-          },
-        "properties": {
-          "name": {
-            "type": "string"
-            },
-          "type": {
-            "type": "string"
-            }
-          }
+        "vessel": {
+          "type": "string",
+          "title": "Vessel"
         },
-      "notifyParty": {
-        "type": "object",
-        "title": "Notify Party",
-        "ui": {
-          "classNames": "item-pd-0"
-          },
-        "properties": {
-          "name": {
-            "type": "string"
-            }
-          }
+        "voyageNo": {
+          "type": "number",
+          "title": "Voyage No"
         },
-      "shipper": {
-        "type": "object",
-        "title": "Shipper",
-        "ui": {
-          "classNames": "item-pd-0"
-          },
-        "properties": {
-          "name": {
-            "type": "string"
-            },
-        "address": {
-          "type": "object",
-            "properties": {
-            "street": { "type": "string" },
-            "country": { "type": "string" }
-              }
-            }
-          }
+        "portOfLoading": {
+          "type": "string",
+          "title": "Port of Loading"
         },
-    "vessel": {
-        "type": "string",
-        "title": "Vessel"
+        "portOfDischarge": {
+          "type": "string",
+          "title": "Port of Discharge"
         },
-      "voyageNo": {
-        "type": "number",
-        "title": "Voyage No"
+        "placeOfReceipt": {
+          "type": "string",
+          "title": "Place of receipt"
         },
-      "portOfLoading": {
-        "type": "string",
-        "title": "Port of Loading"
+        "placeOfDelivery": {
+          "type": "string",
+          "title": "Place of delivery"
         },
-      "portOfDischarge": {
-        "type": "string",
-        "title": "Port of Discharge"
-        },
-      "placeOfReceipt": {
-        "type": "string",
-        "title": "Place of receipt"
-        },
-      "placeOfDelivery": {
-        "type": "string",
-        "title": "Place of delivery"
-        },
-      "packages": {
-        "type": "array",
-        "title": "Packages",
-        "ui": {
+        "packages": {
+          "type": "array",
+          "title": "Packages",
+          "ui": {
             "ui:options": {
-            "orderable": false
+              "orderable": false
             },
-          "classNames": "item-pd-0"
+            "classNames": "item-pd-0"
           },
-        "items": {
-          "type": "object",
-          "properties": {
-            "description": {
-              "type": "string"
+          "items": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string"
               },
-            "weight": {
-              "type": "number",
-              "ui": {
+              "weight": {
+                "type": "number",
+                "ui": {
                   "ui:help": "in kg"
                 }
               },
-            "measurement": {
-              "type": "string"
+              "measurement": {
+                "type": "string"
               }
             }
           }
         }
       }
     }
-  }]
-  }
+  ]
+}

@@ -1,5 +1,11 @@
 import { FormProps } from "react-jsonschema-form";
 type JsonSchema = FormProps<any>["schema"];
+type CustomJsonSchema = {
+  name: "string";
+  properties: {
+    [key: string]: JsonSchema;
+  };
+};
 
 export interface EncryptedJsonWallet {
   // commonplace web3 encrypted wallet object shape, geth parity etc
@@ -47,5 +53,5 @@ export interface Config {
     network: string;
   };
   documentMeta: DocumentMeta;
-  formSchema: Array<JsonSchema>;
+  formSchema: Array<CustomJsonSchema>;
 }

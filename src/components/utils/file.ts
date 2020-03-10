@@ -5,7 +5,7 @@ export const readFileData = (acceptedFiles: File[], handleUpdate: Function, hand
   }
   reader.onload = () => {
     try {
-      const json = JSON.parse(reader.result);
+      const json = JSON.parse(reader.result as string);
       handleUpdate(json);
     } catch (e) {
       handleFileError(e);
