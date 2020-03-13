@@ -4,7 +4,7 @@ fixture("Config JsonSchema Rendering").page`http://localhost:3010`; // eslint-di
 
 const Config = "./fixture/config.json";
 const DropzoneContainer = Selector("#dropzone-container");
-const FormHeader = Selector("#form-header", { timeout: 200000 });
+const FormHeader = Selector("#form-header", { timeout: 20000 });
 const FormBody = Selector("#form-body");
 const PreviewModal = Selector("#preview-modal");
 const inputPassword = Selector("#password");
@@ -33,10 +33,12 @@ test("config schema is rendered correctly to display form", async (t: TestContro
 
   await validateTextContent(t, FormBody, [
     "DEMO CNM",
+    "BL Number*",
+    "Beneficiary Address*",
+    "Holder Address*",
     "Template Renderer",
     "Issuers of the document",
     "Port of Loading",
-    "Recipient of the container",
     "Consignee"
   ]);
 });
