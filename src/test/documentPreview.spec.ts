@@ -26,7 +26,10 @@ test("document preview is rendered correctly with correct data", async (t: TestC
   await t.setFilesToUpload("input[type=file]", [Config]);
 
   await validateTextContent(t, PreviewModal, ["Enter Password"]);
-  await t.typeText(inputPassword, "password").expect(inputPassword.value).eql("password");
+  await t
+    .typeText(inputPassword, "password")
+    .expect(inputPassword.value)
+    .eql("password");
   await t.click(buttonSubmit).setPageLoadTimeout(10000);
 
   await FormHeader.with({ visibilityCheck: true })();

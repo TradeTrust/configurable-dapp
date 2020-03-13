@@ -26,7 +26,10 @@ test("config schema is rendered correctly to display form", async (t: TestContro
 
   await t.setFilesToUpload("input[type=file]", [Config]);
   await validateTextContent(t, PreviewModal, ["Enter Password"]);
-  await t.typeText(inputPassword, "password").expect(inputPassword.value).eql("password");
+  await t
+    .typeText(inputPassword, "password")
+    .expect(inputPassword.value)
+    .eql("password");
   await t.click(buttonSubmit).setPageLoadTimeout(10000);
 
   await FormHeader.with({ visibilityCheck: true })();
