@@ -17,6 +17,3 @@ jobs:
       - run:
           name: build
           command: npm run build
-      - run:
-          name: release
-          command: npx semantic-release
