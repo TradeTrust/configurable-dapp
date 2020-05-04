@@ -3,11 +3,13 @@
  */
 
 import { WriteableToken } from "@govtechsg/oa-token";
-
+import { TitleEscrowCreatorFactory } from "@govtechsg/token-registry";
 import { getLogger } from "../logger";
+import { get } from "lodash";
 
 import { useState, useContext, useEffect, useCallback } from "react";
 import { Web3Context } from "../contexts/Web3Context";
+import { ConfigContext } from "../contexts/ConfigurationContext";
 import { WrappedDocument } from "@govtechsg/open-attestation";
 
 const { trace, error } = getLogger("useToken");
@@ -59,6 +61,7 @@ export const useToken = ({ document }: { document: WrappedDocument<any> }): UseT
   const [tokenInstance, setTokenInstance] = useState<WriteableToken | null>(null);
   const { state, setReady, setMining, setError, setSuccess } = useEthereumTransactionState();
   const { web3, wallet } = useContext(Web3Context);
+  const { config } = useContext(ConfigContext);
 
   const setErrorCallback = useCallback(setError, []);
   const setReadyCallback = useCallback(setReady, []);
@@ -70,7 +73,21 @@ export const useToken = ({ document }: { document: WrappedDocument<any> }): UseT
         throw new Error(`Token is not initialised`);
       }
       setMining();
-      const txHash = await tokenInstance.mintToEscrow(beneficiary, holder);
+
+      const titleEscrowCreatorInstanceAddress =
+        config.application.network === "ethereum-ropsten"
+          ? "0x7797f091a103E068574e6735799e9B2f9CbE590F"
+          : "0xA299A214A85633EF47b58814DC3f732032844973"; // Main net
+      const titleEscrowCreator = TitleEscrowCreatorFactory.connect(titleEscrowCreatorInstanceAddress, wallet);
+      const deploymentReceipt = await titleEscrowCreator.deployNewTitleEscrow(
+        tokenInstance.tokenRegistry.address,
+        beneficiary,
+        holder
+      );
+      const transaction = await deploymentReceipt.wait();
+      const deploymentEvent = transaction.events?.find(evt => evt.event === "TitleEscrowDeployed");
+      const deployedAddress = get(deploymentEvent, "args[0]");
+      const txHash = await tokenInstance.mint(deployedAddress);
       setSuccess();
       return txHash;
     } catch (e) {
