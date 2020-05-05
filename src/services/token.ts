@@ -74,10 +74,8 @@ export const useToken = ({ document }: { document: WrappedDocument<any> }): UseT
       }
       setMining();
 
-      const titleEscrowCreatorInstanceAddress =
-        config.application.network === "ethereum-ropsten"
-          ? "0x7797f091a103E068574e6735799e9B2f9CbE590F"
-          : "0xA299A214A85633EF47b58814DC3f732032844973"; // Main net
+      // Main net: "0xA299A214A85633EF47b58814DC3f732032844973"
+      const titleEscrowCreatorInstanceAddress = "0x7797f091a103E068574e6735799e9B2f9CbE590F";
       const titleEscrowCreator = TitleEscrowCreatorFactory.connect(titleEscrowCreatorInstanceAddress, wallet);
       const deploymentReceipt = await titleEscrowCreator.deployNewTitleEscrow(
         tokenInstance.tokenRegistry.address,
