@@ -44,6 +44,7 @@
     "test:watch": "npm run test -- --watch",
     "integration": "testcafe chrome src/**/*.spec.ts",
     "integration:headless": "testcafe chrome:headless src/**/*.spec.ts",
+    "prep": "npm run lint:fix && npm run test && npm run integration",
     "semantic-release": "semantic-release"
   },
   "devDependencies": {
