@@ -15,5 +15,8 @@ jobs:
           name: test
           command: npm run test
       - run:
+          name: integration
+          command: npm run integration
+      - run:
           name: build
           command: npm run build

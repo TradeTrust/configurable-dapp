@@ -9,7 +9,6 @@ import { get } from "lodash";
 
 import { useState, useContext, useEffect, useCallback } from "react";
 import { Web3Context } from "../contexts/Web3Context";
-import { ConfigContext } from "../contexts/ConfigurationContext";
 import { WrappedDocument } from "@govtechsg/open-attestation";
 
 const { trace, error } = getLogger("useToken");
@@ -61,7 +60,6 @@ export const useToken = ({ document }: { document: WrappedDocument<any> }): UseT
   const [tokenInstance, setTokenInstance] = useState<WriteableToken | null>(null);
   const { state, setReady, setMining, setError, setSuccess } = useEthereumTransactionState();
   const { web3, wallet } = useContext(Web3Context);
-  const { config } = useContext(ConfigContext);
 
   const setErrorCallback = useCallback(setError, []);
   const setReadyCallback = useCallback(setReady, []);

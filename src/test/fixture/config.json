@@ -9,31 +9,31 @@
     "issuers": [
       {
         "name": "DEMO STORE",
-        "tokenRegistry": "0xdA8DBd2Aaffc995F11314c0040716E791de5aEd2",
+        "tokenRegistry": "0xc3E9eBc6aDA9BA4B4Ce65D71901Cb2307e9670cE",
         "identityProof": {
           "type": "DNS-TXT",
-          "location": "tradetrust.io"
+          "location": "demo-tradetrust.openattestation.com"
         }
       }
     ]
   },
   "wallet": {
-    "address": "67b5bc373caa527cee654d6a0f629ba1e84fad02",
-    "id": "825502fd-bf53-4905-8271-6ca3282b57ba",
+    "address": "5b1c22c60e66e58b07fc00191e5603d0c41d3538",
+    "id": "00f98098-6603-4a24-937f-0033de4d5ca8",
     "version": 3,
     "Crypto": {
       "cipher": "aes-128-ctr",
-      "cipherparams": { "iv": "788b792e1bfacd491e0f196e296c43d6" },
-      "ciphertext": "af2dd51afb80bf91eeb2390e87cb8277a786dcb26eb8a03114ddd9d4e8c85f4c",
+      "cipherparams": { "iv": "5e2d3f1d5ca74b33518f0b1b38c82465" },
+      "ciphertext": "c2f663ffb6640a5f72cd4a6fced8e2cf241570536977c16880651044328ab667",
       "kdf": "scrypt",
       "kdfparams": {
-        "salt": "8323faf6a188a8dc37599cdd84148336551eb76d2c962973fd318f33fdc7b760",
+        "salt": "95d694ca891cf6a71f3dbae2fab6653f3985fb86075dd47fb08985a38db63433",
         "n": 1,
         "dklen": 32,
         "p": 1,
         "r": 8
       },
-      "mac": "19aef74cad9195e9a417b7b41e22b4793ac78318a8d4b6c3194bddc427f26654"
+      "mac": "2ad49a8d875e82860ee9026029fa3836b18f0ecf2861868437045159383e16cb"
     }
   },
   "formSchema": [
