@@ -61,7 +61,6 @@ export const useToken = ({ document }: { document: WrappedDocument<any> }): UseT
   const [tokenInstance, setTokenInstance] = useState<WriteableToken | null>(null);
   const { state, setReady, setMining, setError, setSuccess } = useEthereumTransactionState();
   const { web3, wallet } = useContext(Web3Context);
-  const { config } = useContext(ConfigContext);
 
   const setErrorCallback = useCallback(setError, []);
   const setReadyCallback = useCallback(setReady, []);
