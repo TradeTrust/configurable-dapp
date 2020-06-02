@@ -74,8 +74,8 @@ export const useToken = ({ document }: { document: WrappedDocument<any> }): UseT
       }
       setMining();
 
-      // Main net: "0xA299A214A85633EF47b58814DC3f732032844973"
-      const titleEscrowCreatorInstanceAddress = "0x7797f091a103E068574e6735799e9B2f9CbE590F";
+      // Main net: ""
+      const titleEscrowCreatorInstanceAddress = "0x88193931894525fd10A0cF6593eB54F163D00bbd";
       const titleEscrowCreator = TitleEscrowCreatorFactory.connect(titleEscrowCreatorInstanceAddress, wallet);
       const deploymentReceipt = await titleEscrowCreator.deployNewTitleEscrow(
         tokenInstance.tokenRegistry.address,
