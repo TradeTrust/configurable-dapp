@@ -9,7 +9,6 @@ import { get } from "lodash";
 
 import { useState, useContext, useEffect, useCallback } from "react";
 import { Web3Context } from "../contexts/Web3Context";
-import { ConfigContext } from "../contexts/ConfigurationContext";
 import { WrappedDocument } from "@govtechsg/open-attestation";
 
 const { trace, error } = getLogger("useToken");
