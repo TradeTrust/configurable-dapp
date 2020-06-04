@@ -10,7 +10,7 @@
     "@govtechsg/decentralized-renderer-react-components": "^1.2.1",
     "@govtechsg/oa-token": "^1.13.0",
     "@govtechsg/open-attestation": "^3.1.1",
-    "@govtechsg/token-registry": "^1.2.0",
+    "@govtechsg/token-registry": "^1.3.0",
     "@govtechsg/tradetrust-react-component": "^1.2.2",
     "@govtechsg/tradetrust-schema": "^1.1.0",
     "@hot-loader/react-dom": "16.10.2",

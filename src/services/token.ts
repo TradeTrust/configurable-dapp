@@ -9,7 +9,6 @@ import { get } from "lodash";
 
 import { useState, useContext, useEffect, useCallback } from "react";
 import { Web3Context } from "../contexts/Web3Context";
-import { ConfigContext } from "../contexts/ConfigurationContext";
 import { WrappedDocument } from "@govtechsg/open-attestation";
 
 const { trace, error } = getLogger("useToken");
@@ -61,7 +60,6 @@ export const useToken = ({ document }: { document: WrappedDocument<any> }): UseT
   const [tokenInstance, setTokenInstance] = useState<WriteableToken | null>(null);
   const { state, setReady, setMining, setError, setSuccess } = useEthereumTransactionState();
   const { web3, wallet } = useContext(Web3Context);
-  const { config } = useContext(ConfigContext);
 
   const setErrorCallback = useCallback(setError, []);
   const setReadyCallback = useCallback(setReady, []);
@@ -74,8 +72,8 @@ export const useToken = ({ document }: { document: WrappedDocument<any> }): UseT
       }
       setMining();
 
-      // Main net: "0xA299A214A85633EF47b58814DC3f732032844973"
-      const titleEscrowCreatorInstanceAddress = "0x7797f091a103E068574e6735799e9B2f9CbE590F";
+      // Main net: ""
+      const titleEscrowCreatorInstanceAddress = "0x88193931894525fd10A0cF6593eB54F163D00bbd";
       const titleEscrowCreator = TitleEscrowCreatorFactory.connect(titleEscrowCreatorInstanceAddress, wallet);
       const deploymentReceipt = await titleEscrowCreator.deployNewTitleEscrow(
         tokenInstance.tokenRegistry.address,
